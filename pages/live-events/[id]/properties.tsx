@@ -109,7 +109,7 @@ export default function Properties() {
             {Object.keys(event.properties).map((key) => {
               if (key !== 'userAgentData')
                 return (
-                  <Tr>
+                  <Tr key={event.timestamp}>
                     <Td>
                       <Code>{key}</Code>
                     </Td>
