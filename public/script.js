@@ -8,7 +8,6 @@ const handleEvent = (e) => {
   console.log(e.type, e.destination);
   const eventInfo = {
     event: e.type,
-    element: e.target,
     selector:
       typeof e.target === 'string' || e.target instanceof String
         ? finder(e.target)
@@ -16,6 +15,7 @@ const handleEvent = (e) => {
 
     timestamp: Date.now(),
     properties: {
+      referrer: document.referrer,
       clientX: e.clientX,
       clientY: e.clientY,
       offsetX: e.offsetX,

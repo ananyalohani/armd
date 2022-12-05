@@ -10,9 +10,9 @@ export default function Layout({ heading, children }: LayoutProps) {
   return (
     <main>
       <SimpleSidebar>
-        <Container p='0' m='0' ml='4' mt='3'>
+        <Container p='0' m='0' ml='4' mt='3' maxW='container.xl'>
           <Heading fontWeight='extrabold'>{heading}</Heading>
-          <Container p='0' m='0' mt='4'>
+          <Container p='0' m='0' mt='4' maxW='full'>
             {children}
           </Container>
         </Container>

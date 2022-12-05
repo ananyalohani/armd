@@ -23,6 +23,7 @@ import {
   HiHome,
   HiStatusOnline,
   HiViewGrid,
+  HiFilm,
 } from 'react-icons/hi';
 
 interface LinkItemProps {
@@ -35,6 +36,7 @@ const LinkItems: Array<LinkItemProps> = [
   { name: 'Dashboard', icon: HiViewGrid, href: '/dashboard' },
   { name: 'Live Events', icon: HiStatusOnline, href: 'live-events' },
   { name: 'Funnels', icon: HiFilter, href: '/funnels' },
+  { name: 'Session Recordings', icon: HiFilm, href: '/recordings' },
   { name: 'Settings', icon: HiCog, href: '/settings' },
 ];
 
