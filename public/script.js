@@ -4,15 +4,16 @@ function addMultipleEventListeners(element, events, handler) {
   events.forEach((e) => element.addEventListener(e, handler, false));
 }
 
-async function handleEvent(e) {
-  const res = await fetch(
-    'https://ipgeolocation.abstractapi.com/v1/?api_key=4889997d919c4e0aab3d572b2edae95c'
-  );
-  const geolocation = await res.json();
+const handleEvent = (e) => {
+  console.log(e.type, e.destination);
   const eventInfo = {
     event: e.type,
     element: e.target,
-    selector: finder(e.target),
+    selector:
+      typeof e.target === 'string' || e.target instanceof String
+        ? finder(e.target)
+        : undefined,
+
     timestamp: Date.now(),
     properties: {
       clientX: e.clientX,
@@ -31,20 +32,33 @@ async function handleEvent(e) {
       clientHeight: document.documentElement.clientHeight,
       screenWidth: window.screen.width,
       screenHeight: window.screen.height,
-      geolocation,
+      innerText: e.target.innerText || undefined,
+      destination: e.destination || undefined,
     },
   };
-  console.log({ eventInfo });
-  // TODO: Send eventInfo to server
-}
+  console.log(e.type, { eventInfo });
+  // fetch('/log', {
+  //   method: 'POST',
+  //   headers: {
+  //     'Content-Type': 'application/json',
+  //   },
+  //   body: JSON.stringify({
+  //     eventInfo
+  //   }),
+  //   keepalive: true,
+  // });
+};
 
-addMultipleEventListeners(window, ['pageshow'], handleEvent);
-
-document.addEventListener('DOMContentLoaded', () => {
-  addMultipleEventListeners(document.body, ['click', 'dblclick'], handleEvent);
+document.addEventListener('DOMContentLoaded', async () => {
+  addMultipleEventListeners(
+    document,
+    ['click', 'dblclick', 'scroll'],
+    handleEvent
+  );
+  addMultipleEventListeners(navigation, ['navigate'], handleEvent);
   addMultipleEventListeners(
     window,
-    ['resize', 'scroll', 'pageshow', 'pagehide', 'contextmenu'],
+    ['resize', 'scroll', 'pageshow', 'pagehide', 'contextmenu', 'beforeunload'],
     handleEvent
   );
 });
