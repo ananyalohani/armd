@@ -37,7 +37,7 @@ export default function LiveEvents() {
           </Thead>
           <Tbody>
             <>
-              {events.map((e) => {
+              {events.map((e, idx) => {
                 const pathname = e.properties.pathname.split('/')[1];
                 const url = pathname
                   ? e.properties.host + pathname
@@ -46,7 +46,7 @@ export default function LiveEvents() {
                   ? 'mobile'
                   : 'web';
                 return (
-                  <Tr>
+                  <Tr key={idx}>
                     <Td textTransform='capitalize'>
                       <Link href='/live-events/a/properties' color='purple.700'>
                         {e.event}
