@@ -1,30 +1,28 @@
 import {
   Box,
   BoxProps,
-  CloseButton,
   Drawer,
   DrawerContent,
   Flex,
   FlexProps,
   Icon,
   IconButton,
-  Link,
-  Text,
   useColorModeValue,
   useDisclosure,
 } from '@chakra-ui/react';
-import Logo from './Logo';
+import Link from 'next/link';
 import React, { ReactNode } from 'react';
 import { IconType } from 'react-icons';
 import { FiMenu } from 'react-icons/fi';
 import {
   HiCog,
+  HiFilm,
   HiFilter,
   HiHome,
   HiStatusOnline,
   HiViewGrid,
-  HiFilm,
 } from 'react-icons/hi';
+import Logo from './Logo';
 
 interface LinkItemProps {
   name: string;
@@ -33,7 +31,7 @@ interface LinkItemProps {
 }
 const LinkItems: Array<LinkItemProps> = [
   { name: 'Home', icon: HiHome, href: '/' },
-  { name: 'Dashboard', icon: HiViewGrid, href: '/dashboard' },
+  { name: 'Dashboards', icon: HiViewGrid, href: '/dashboards' },
   { name: 'Live Events', icon: HiStatusOnline, href: 'live-events' },
   { name: 'Funnels', icon: HiFilter, href: '/funnels' },
   { name: 'Session Recordings', icon: HiFilm, href: '/recordings' },
@@ -104,11 +102,7 @@ interface NavItemProps extends FlexProps {
 }
 const NavItem = ({ icon, href, children, ...rest }: NavItemProps) => {
   return (
-    <Link
-      href={href}
-      style={{ textDecoration: 'none' }}
-      _focus={{ boxShadow: 'none' }}
-    >
+    <Link href={href || '/'}>
       <Flex
         align='center'
         p='2'
@@ -119,7 +113,6 @@ const NavItem = ({ icon, href, children, ...rest }: NavItemProps) => {
         fontWeight='medium'
         _hover={{
           bg: 'purple.50',
-          // color: 'white',
           color: 'purple.600',
         }}
         fontSize='14'
@@ -164,9 +157,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
         icon={<FiMenu />}
       />
 
-      <Text fontSize='2xl' ml='8' fontFamily='monospace' fontWeight='bold'>
-        Logo
-      </Text>
+      <Logo />
     </Flex>
   );
 };
