@@ -23,6 +23,12 @@ export default function ActiveUsersDashboard() {
     },
     (_, i) =>
       format(new Date(new Date().setDate(new Date().getDate() - i)), 'MMM dd')
+  ).reverse();
+  const data = Array.from(
+    {
+      length: timePeriod === 'week' ? 7 : timePeriod === 'fortnight' ? 14 : 30,
+    },
+    () => Math.floor(Math.random() * 100)
   );
 
   return (
@@ -54,10 +60,10 @@ export default function ActiveUsersDashboard() {
               value='fortnight'
               defaultChecked={timePeriod === 'fortnight'}
             >
-              Last 30 days
+              Last 14 days
             </option>
             <option value='month' defaultChecked={timePeriod === 'month'}>
-              Last 60 days
+              Last 30 days
             </option>
           </Select>
         </Flex>
@@ -72,7 +78,7 @@ export default function ActiveUsersDashboard() {
           data={{
             datasets: [
               {
-                data: [13, 16, 28, 11, 9, 10, 4],
+                data: data,
                 borderColor: '#B794F495',
                 pointBorderColor: '#B794F4',
               },
