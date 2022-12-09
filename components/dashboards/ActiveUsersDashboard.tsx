@@ -1,17 +1,15 @@
 import {
-  Box,
   Card,
   CardBody,
   Flex,
   Heading,
-  HStack,
   Select,
   Text,
   VStack,
 } from '@chakra-ui/react';
-import React, { useState } from 'react';
-import { Line } from 'react-chartjs-2';
 import format from 'date-fns/format';
+import { useState } from 'react';
+import { Line } from 'react-chartjs-2';
 
 type TimePeriod = 'week' | 'fortnight' | 'month';
 

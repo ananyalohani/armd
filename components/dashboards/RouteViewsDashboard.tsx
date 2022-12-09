@@ -3,25 +3,29 @@ import { Bar } from 'react-chartjs-2';
 
 type Props = {};
 
-export default function ReferringDomainDashboard({}: Props) {
+export default function RouteViewsDashboard({}: Props) {
   const data = [
     {
-      domain: 'direct',
-      count: 20,
+      route: '/',
+      count: 70,
     },
     {
-      domain: 'google.com',
-      count: 10,
+      route: '/about',
+      count: Math.floor(Math.random() * 50),
     },
     {
-      domain: 'facebook.com',
-      count: 5,
+      route: '/contact',
+      count: Math.floor(Math.random() * 50),
     },
     {
-      domain: 'twitter.com',
-      count: 3,
+      route: '/blog',
+      count: Math.floor(Math.random() * 50),
     },
-  ];
+    {
+      route: '/shop',
+      count: Math.floor(Math.random() * 50),
+    },
+  ].sort((a, b) => b.count - a.count);
 
   return (
     <Card backgroundColor='white'>
@@ -32,11 +36,11 @@ export default function ReferringDomainDashboard({}: Props) {
           pl='3'
           py='1'
           mb='2'
-          borderColor='blue.200'
+          borderColor='green.200'
         >
-          <Heading fontSize='md'>Referring domain</Heading>
+          <Heading fontSize='md'>Route views</Heading>
           <Text fontSize='sm'>
-            Shows the most common referring domains for your users over the past
+            Shows the most commonly visited routes by your users over the past
             14 days.
           </Text>
         </VStack>
@@ -50,12 +54,12 @@ export default function ReferringDomainDashboard({}: Props) {
             },
           }}
           data={{
-            labels: data.map((d) => d.domain),
+            labels: data.map((d) => d.route),
             datasets: [
               {
-                label: 'Referring Domain',
+                label: 'Route View',
                 data: data.map((d) => d.count),
-                backgroundColor: '#63b3ed95',
+                backgroundColor: '#68D39195',
               },
             ],
           }}
