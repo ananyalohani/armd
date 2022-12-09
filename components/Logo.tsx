@@ -7,7 +7,7 @@ export default function Logo() {
       <Heading
         backgroundColor='gray.100'
         color='black'
-        px='4'
+        px='6'
         py='1'
         letterSpacing='tighter'
         fontWeight='black'

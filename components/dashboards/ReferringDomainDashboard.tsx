@@ -1,14 +1,29 @@
 import { Box, Card, CardBody, Heading, Text, VStack } from '@chakra-ui/react';
 import React from 'react';
-import { Line } from 'react-chartjs-2';
+import { Bar, Line } from 'react-chartjs-2';
 import format from 'date-fns/format';
 
 type Props = {};
 
 export default function ReferringDomainDashboard({}: Props) {
-  const last7Days = Array.from({ length: 7 }, (_, i) =>
-    format(new Date(new Date().setDate(new Date().getDate() - i)), 'MMM dd')
-  );
+  const data = [
+    {
+      domain: 'direct',
+      count: 20,
+    },
+    {
+      domain: 'google.com',
+      count: 10,
+    },
+    {
+      domain: 'facebook.com',
+      count: 5,
+    },
+    {
+      domain: 'twitter.com',
+      count: 3,
+    },
+  ];
 
   return (
     <Card backgroundColor='white'>
@@ -19,15 +34,17 @@ export default function ReferringDomainDashboard({}: Props) {
           pl='3'
           py='1'
           mb='2'
-          borderColor='purple.200'
+          borderColor='blue.200'
         >
-          <Heading fontSize='md'>Active users</Heading>
+          <Heading fontSize='md'>Referring Domain</Heading>
           <Text fontSize='sm'>
-            Shows the number of unique users that use your app.
+            Shows the most common referring domains for your users over the past
+            14 days.
           </Text>
         </VStack>
-        <Line
+        <Bar
           options={{
+            indexAxis: 'y',
             plugins: {
               legend: {
                 display: false,
@@ -35,12 +52,14 @@ export default function ReferringDomainDashboard({}: Props) {
             },
           }}
           data={{
+            labels: data.map((d) => d.domain),
             datasets: [
               {
-                data: [13, 16, 28, 11, 9, 10, 4],
+                label: 'Referring Domain',
+                data: data.map((d) => d.count),
+                backgroundColor: '#63b3ed95',
               },
             ],
-            labels: last7Days,
           }}
         />
       </CardBody>
