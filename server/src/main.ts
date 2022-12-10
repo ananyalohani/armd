@@ -2,11 +2,10 @@ import bodyParser from "body-parser";
 import cors from "cors";
 import "dotenv/config";
 import express from "express";
-import { sendEvent } from "./services/kafka";
-import prisma from "./services/prisma";
 import init from "./init";
 import Logger from "./logger";
 import { asynchronouslyProcessEvent } from "./process-event";
+import prisma from "./services/prisma";
 
 const PORT = process.env.PORT || 3000;
 
@@ -21,8 +20,12 @@ app.set("json spaces", 2);
 
 app.post("/log", async (req, res) => {
   const event = req.body;
+  if (!event?.data) {
+    res.status(400).send("Missing event data");
+    return;
+  }
   const ipAddress = (req.ip || req.headers["x-forwarded-for"] || "") as string;
-  asynchronouslyProcessEvent({ event, ipAddress });
+  asynchronouslyProcessEvent({ event: event.data, ipAddress });
   res.send("Logged");
 });
 
