@@ -4,7 +4,7 @@ import "dotenv/config";
 import express from "express";
 import init from "./init";
 import Logger from "./logger";
-import { asynchronouslyProcessEvent } from "./process-event";
+import { asynchronouslyProcessEvent } from "./event";
 import prisma from "./services/prisma";
 
 const PORT = process.env.PORT || 3000;

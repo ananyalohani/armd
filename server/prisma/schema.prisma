@@ -10,4 +10,6 @@ datasource db {
 model Person {
   id        String @id @default(cuid())
   ipAddress String @unique
+  country   String
+  continent String
 }

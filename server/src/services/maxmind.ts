@@ -22,9 +22,17 @@ export const getGeoData = (
   country: string;
   continent: string;
 } => {
-  const { country, continent } = reader.country(ip);
-  return {
-    country: country.names.en,
-    continent: continent.names.en,
-  };
+  try {
+    const { country, continent } = reader.country(ip);
+    return {
+      country: country.names.en,
+      continent: continent.names.en,
+    };
+  } catch (error) {
+    logger.error(`Failed to get geo data for IP: ${ip}`);
+    return {
+      country: "Unknown",
+      continent: "Unknown",
+    };
+  }
 };

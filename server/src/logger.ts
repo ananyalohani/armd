@@ -1,12 +1,12 @@
 class Logger {
   constructor(private readonly name: string) {}
 
-  info(message: string) {
-    console.log(`[${this.name}] ${message}`);
+  info(...messages: string[]) {
+    console.log(`[${this.name}]`, ...messages);
   }
 
-  error(message: string) {
-    console.error(`[${this.name}] ${message}`);
+  error(...messages: string[]) {
+    console.error(`[${this.name}]`, ...messages);
   }
 }
 

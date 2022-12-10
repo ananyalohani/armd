@@ -30,11 +30,17 @@ export const init = async () => {
   }
 };
 
-export const sendEvent = async (event: any) => {
+export const sendEvent = async (event: Partial<ClickHouseEvent>) => {
   try {
+    console.log(JSON.stringify(event));
     const [record] = await producer.send({
       topic: process.env.KAFKA_TOPIC || "",
-      messages: [{ value: JSON.stringify(event) }],
+      messages: [
+        {
+          key: event.id,
+          value: JSON.stringify(event),
+        },
+      ],
     });
     logger.info(
       `Sent event to Kafka: ${record.topicName}:${record.partition}:${record.baseOffset}`

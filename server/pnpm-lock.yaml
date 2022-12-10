@@ -12,6 +12,7 @@ specifiers:
   '@typescript-eslint/parser': ^5.40.0
   body-parser: ^1.20.1
   cors: ^2.8.5
+  cuid: ^2.1.8
   dotenv: ^16.0.3
   eslint-config-airbnb: ^19.0.4
   eslint-config-prettier: ^8.5.0
@@ -31,6 +32,7 @@ dependencies:
   '@maxmind/geoip2-node': 3.5.0
   body-parser: 1.20.1
   cors: 2.8.5
+  cuid: 2.1.8
   express: 4.18.2
   kafkajs: 2.2.3
 
@@ -532,6 +534,10 @@ packages:
   /create-require/1.1.1:
     resolution: {integrity: sha512-dcKFX3jn0MpIaXjisoRvexIJVEKzaq7z2rZKxf+MSr9TkdmHmsU4m2lcLojrj/FHl8mk5VxMmYA+ftRkP/3oKQ==}
     dev: true
+
+  /cuid/2.1.8:
+    resolution: {integrity: sha512-xiEMER6E7TlTPnDxrM4eRiC6TRgjNX9xzEZ5U/Se2YJKr7Mq4pJn/2XEHjl3STcSh96GmkHPcBXLES8M29wyyg==}
+    dev: false
 
   /debug/2.6.9:
     resolution: {integrity: sha512-bC7ElrdJaJnPbAP+1EotYvqZsb3ecl5wi6Bfi6BJTUcNowp6cvspg0jXznRTKDjm/E7AdgFBVeAPVMNcKGsHMA==}

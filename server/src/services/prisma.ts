@@ -3,11 +3,10 @@ import Logger from "../logger";
 
 const logger = new Logger("Prisma");
 
-let prisma: PrismaClient;
+const prisma = new PrismaClient();
 
 export const init = async () => {
   logger.info("Connecting to Prisma...");
-  prisma = new PrismaClient();
   try {
     await prisma.$connect();
     logger.info("Connected to Prisma");

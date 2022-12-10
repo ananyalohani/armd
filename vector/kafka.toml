@@ -1,0 +1,20 @@
+[sources.events]
+type = "kafka"
+bootstrap_servers = "${KAFKA_BROKERS}"
+group_id = "${KAFKA_GROUP_ID}"
+key_field = "message"
+topics = [ "${KAFKA_TOPIC}" ]
+decoding.codec = "json"
+
+[sinks.clickhouse]
+type = "clickhouse"
+inputs = ["events"]
+endpoint = "${CLICKHOUSE_HOST}"
+database = "${CLICKHOUSE_DATABASE}"
+table = "${CLICKHOUSE_TABLE}"
+skip_unknown_fields = true
+auth.strategy = "basic"
+auth.user = "${CLICKHOUSE_USER}"
+auth.password = "${CLICKHOUSE_PASSWORD}"
+buffer.max_events = 10000
+batch.timeout_secs = 1

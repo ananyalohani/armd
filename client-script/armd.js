@@ -11,7 +11,6 @@ const createHandler = (baseUrl) => {
     console.log(e.type, e.destination, e.target);
     const eventInfo = {
       event: e.type,
-      selector: isNode(e.target) ? finder(e.target) : undefined,
       timestamp: Date.now(),
       properties: {
         referrer: document.referrer,
@@ -26,11 +25,12 @@ const createHandler = (baseUrl) => {
         host: window.location.hostname,
         pathname: window.location.pathname,
         userAgent: navigator.userAgent,
-        userAgentData: navigator.userAgentData,
+        userAgentData: JSON.stringify(navigator.userAgentData),
         clientWidth: document.documentElement.clientWidth,
         clientHeight: document.documentElement.clientHeight,
         screenWidth: window.screen.width,
         screenHeight: window.screen.height,
+        selector: isNode(e.target) ? finder(e.target) : undefined,
         innerText: e.target.innerText || undefined,
         destination: e.destination || undefined,
       },
@@ -42,7 +42,7 @@ const createHandler = (baseUrl) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        eventInfo,
+        data: eventInfo,
       }),
       keepalive: true,
     });
