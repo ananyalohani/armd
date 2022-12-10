@@ -1,0 +1,28 @@
+{
+  "name": "armd-client-script",
+  "files": [
+    "dist"
+  ],
+  "main": "./dist/armd.umd.cjs",
+  "module": "./dist/armd.js",
+  "exports": {
+    ".": {
+      "import": "./dist/armd.js",
+      "require": "./dist/armd.umd.cjs"
+    }
+  },
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "vite": "^4.0.0"
+  },
+  "dependencies": {
+    "@medv/finder": "^2.1.0"
+  }
+}

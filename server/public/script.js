@@ -1,4 +1,4 @@
-import { finder } from 'https://medv.io/finder/finder.js';
+import { finder } from "https://medv.io/finder/finder.js";
 
 function addMultipleEventListeners(element, events, handler) {
   events.forEach((e) => element.addEventListener(e, handler, false));
@@ -9,7 +9,7 @@ const handleEvent = (e) => {
   const eventInfo = {
     event: e.type,
     selector:
-      typeof e.target === 'string' || e.target instanceof String
+      typeof e.target === "string" || e.target instanceof String
         ? finder(e.target)
         : undefined,
 
@@ -37,28 +37,28 @@ const handleEvent = (e) => {
     },
   };
   console.log(e.type, { eventInfo });
-  // fetch('/log', {
-  //   method: 'POST',
-  //   headers: {
-  //     'Content-Type': 'application/json',
-  //   },
-  //   body: JSON.stringify({
-  //     eventInfo
-  //   }),
-  //   keepalive: true,
-  // });
+  fetch("http://localhost:3000/log", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      eventInfo,
+    }),
+    keepalive: true,
+  });
 };
 
-document.addEventListener('DOMContentLoaded', async () => {
+document.addEventListener("DOMContentLoaded", async () => {
   addMultipleEventListeners(
     document,
-    ['click', 'dblclick', 'scroll'],
+    ["click", "dblclick", "scroll"],
     handleEvent
   );
-  addMultipleEventListeners(navigation, ['navigate'], handleEvent);
+  addMultipleEventListeners(navigation, ["navigate"], handleEvent);
   addMultipleEventListeners(
     window,
-    ['resize', 'scroll', 'pageshow', 'pagehide', 'contextmenu', 'beforeunload'],
+    ["resize", "scroll", "pageshow", "pagehide", "contextmenu", "beforeunload"],
     handleEvent
   );
 });
