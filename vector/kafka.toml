@@ -6,9 +6,22 @@ key_field = "message"
 topics = [ "${KAFKA_TOPIC}" ]
 decoding.codec = "json"
 
+[transforms.remove_fields]
+type = "remap"
+inputs = ["events"]
+source = '''
+  del(.timestamp)
+  del(.message)
+  del(.topic)
+  del(.partition)
+  del(.offset)
+  del(.headers)
+  del(.source_type)
+'''
+
 [sinks.clickhouse]
 type = "clickhouse"
-inputs = ["events"]
+inputs = ["remove_fields"]
 endpoint = "${CLICKHOUSE_HOST}"
 database = "${CLICKHOUSE_DATABASE}"
 table = "${CLICKHOUSE_TABLE}"
