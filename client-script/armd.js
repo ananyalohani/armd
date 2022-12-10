@@ -51,30 +51,28 @@ const createHandler = (baseUrl) => {
   return handleEvent;
 };
 
-const startArmd =
-  ({ base }) =>
-  () => {
-    const handleEvent = createHandler(base);
-    document.addEventListener("DOMContentLoaded", async () => {
-      addMultipleEventListeners(
-        document,
-        ["click", "dblclick", "scroll"],
-        handleEvent
-      );
-      addMultipleEventListeners(navigation, ["navigate"], handleEvent);
-      addMultipleEventListeners(
-        window,
-        [
-          "resize",
-          "scroll",
-          "pageshow",
-          "pagehide",
-          "contextmenu",
-          "beforeunload",
-        ],
-        handleEvent
-      );
-    });
-  };
+const startArmd = ({ base }) => {
+  const handleEvent = createHandler(base);
+  document.addEventListener("DOMContentLoaded", async () => {
+    addMultipleEventListeners(
+      document,
+      ["click", "dblclick", "scroll"],
+      handleEvent
+    );
+    addMultipleEventListeners(navigation, ["navigate"], handleEvent);
+    addMultipleEventListeners(
+      window,
+      [
+        "resize",
+        "scroll",
+        "pageshow",
+        "pagehide",
+        "contextmenu",
+        "beforeunload",
+      ],
+      handleEvent
+    );
+  });
+};
 
 window.startArmd = startArmd;
