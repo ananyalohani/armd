@@ -6,6 +6,7 @@ import init from "./init";
 import Logger from "./logger";
 import { asynchronouslyProcessEvent } from "./event";
 import prisma from "./services/prisma";
+import { getEvents } from "./services/clickhouse";
 
 const PORT = process.env.PORT || 3000;
 
@@ -41,6 +42,11 @@ app.get("/persons/:id", async (req, res) => {
     },
   });
   res.json(person);
+});
+
+app.get("/events", async (req, res) => {
+  const events = await getEvents();
+  res.json(events);
 });
 
 async function main() {

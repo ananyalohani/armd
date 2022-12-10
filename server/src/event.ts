@@ -8,14 +8,14 @@ const snakeCase = (str: string) =>
 
 const transformEvent = (event: ArmdEvent): Partial<ClickHouseEvent> => {
   const { id, type, timestamp, properties } = event;
-  const date = new Date(timestamp)
+  const datetime = new Date(timestamp)
     .toISOString()
     .replace("T", " ")
     .split(".")[0];
   const clickhouseEvent: Partial<ClickHouseEvent> = {
     id,
     type,
-    timestamp: date,
+    datetime,
   };
   for (const [key, value] of Object.entries(properties)) {
     clickhouseEvent[`prop_${snakeCase(key)}`] = value;
@@ -44,9 +44,6 @@ export const asynchronouslyProcessEvent = async ({
 
   // Transform to clickhouse event
   const clickhouseEvent = transformEvent(event);
-  console.info(
-    `Transformed event: ${JSON.stringify(clickhouseEvent, null, 2)}`
-  );
 
   // Create a Person record in Postgres if it doesn't exist
   const createPersonPromise = prisma.person.upsert({

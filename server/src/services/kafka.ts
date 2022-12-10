@@ -32,7 +32,6 @@ export const init = async () => {
 
 export const sendEvent = async (event: Partial<ClickHouseEvent>) => {
   try {
-    console.log(JSON.stringify(event));
     const [record] = await producer.send({
       topic: process.env.KAFKA_TOPIC || "",
       messages: [

@@ -9,7 +9,7 @@ const CREATE_EVENTS_TABLE = `
   CREATE TABLE IF NOT EXISTS events (
     id String,
     type String,
-    timestamp DateTime,
+    datetime DateTime,
     prop_ip String,
     prop_country String,
     prop_continent String,
@@ -35,7 +35,7 @@ const CREATE_EVENTS_TABLE = `
     prop_destination Nullable(String)
   )
   ENGINE = MergeTree()
-  ORDER BY (timestamp)
+  ORDER BY (datetime)
 `;
 
 export const init = async () => {
@@ -66,5 +66,17 @@ export const init = async () => {
     logger.info("Created events table");
   } catch (error) {
     logger.error(`Failed to connect to ClickHouse: ${error}`);
+  }
+};
+
+export const getEvents = async () => {
+  try {
+    const result = await client.query({
+      query: "SELECT * FROM events",
+    });
+    const events = await result.json();
+    return events;
+  } catch (error) {
+    logger.error(`Failed to get events: ${error}`);
   }
 };
