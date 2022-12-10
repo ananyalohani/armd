@@ -2,19 +2,28 @@ import bodyParser from "body-parser";
 import cors from "cors";
 import "dotenv/config";
 import express from "express";
-import prisma from "./database";
-import { sendLog } from "./kafka";
+import { sendEvent } from "./services/kafka";
+import prisma from "./services/prisma";
+import init from "./init";
+import Logger from "./logger";
+import { asynchronouslyProcessEvent } from "./process-event";
 
 const PORT = process.env.PORT || 3000;
+
+const logger = new Logger("Node");
 
 const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 
+app.set("trust proxy", true);
+app.set("json spaces", 2);
+
 app.post("/log", async (req, res) => {
-  const log = req.body;
-  const record = await sendLog(log);
-  res.json(record);
+  const event = req.body;
+  const ipAddress = (req.ip || req.headers["x-forwarded-for"] || "") as string;
+  asynchronouslyProcessEvent({ event, ipAddress });
+  res.send("Logged");
 });
 
 app.get("/persons", async (req, res) => {
@@ -31,6 +40,11 @@ app.get("/persons/:id", async (req, res) => {
   res.json(person);
 });
 
-app.listen(PORT, () => {
-  console.log(`Server running on port http://localhost:${PORT}...`);
-});
+async function main() {
+  await init(logger);
+  app.listen(PORT, () => {
+    logger.info(`Server running on port http://localhost:${PORT}...`);
+  });
+}
+
+main();
