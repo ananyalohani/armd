@@ -3,6 +3,7 @@ import cors from "cors";
 import "dotenv/config";
 import express from "express";
 import prisma from "./database";
+import { sendLog } from "./kafka";
 
 const PORT = process.env.PORT || 3000;
 
@@ -12,8 +13,8 @@ app.use(bodyParser.json());
 
 app.post("/log", async (req, res) => {
   const log = req.body;
-  console.log(req.body);
-  res.json(log);
+  const record = await sendLog(log);
+  res.json(record);
 });
 
 app.get("/persons", async (req, res) => {
