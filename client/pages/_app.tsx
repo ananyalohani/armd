@@ -1,7 +1,7 @@
-import "../styles/globals.css";
-import type { AppProps } from "next/app";
-import { ChakraProvider } from "@chakra-ui/react";
-import { Fira_Code, Passion_One } from "@next/font/google";
+import '../styles/globals.css';
+import type { AppProps } from 'next/app';
+import { ChakraProvider } from '@chakra-ui/react';
+import { Fira_Code, Passion_One } from '@next/font/google';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -14,17 +14,17 @@ import {
   Legend,
   ArcElement,
   Colors,
-} from "chart.js";
-import Script from "next/script";
+} from 'chart.js';
+import Script from 'next/script';
 
 const logoFont = Passion_One({
-  weight: "400",
-  subsets: ["latin"],
+  weight: '400',
+  subsets: ['latin'],
 });
 
 const codeFont = Fira_Code({
-  weight: ["300", "400", "500", "600", "700"],
-  subsets: ["latin"],
+  weight: ['300', '400', '500', '600', '700'],
+  subsets: ['latin'],
 });
 
 ChartJS.register(
@@ -43,7 +43,7 @@ ChartJS.register(
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <>
-      <Script src="/script.js" />
+      <Script src='/script.js' />
       <ChakraProvider>
         <style jsx global>
           {`
