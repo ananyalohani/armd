@@ -20,10 +20,13 @@
     "preview": "vite preview"
   },
   "devDependencies": {
+    "@types/uuid": "^9.0.0",
     "typescript": "^4.9.3",
     "vite": "^4.0.0"
   },
   "dependencies": {
-    "@medv/finder": "^2.1.0"
+    "@medv/finder": "^2.1.0",
+    "rrweb": "^2.0.0-alpha.4",
+    "uuid": "^9.0.0"
   }
 }

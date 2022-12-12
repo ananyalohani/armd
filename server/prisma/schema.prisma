@@ -13,3 +13,29 @@ model Person {
   country   String
   continent String
 }
+
+model SessionEvent {
+  id          String @id @default(uuid())
+  type        Int
+  timestamp   DateTime
+  data        Json?
+  session     Session  @relation(fields: [sessionId], references: [id])
+  sessionId   String
+}
+
+model Session {
+  id          String @id
+  startTime   DateTime
+  endTime     DateTime
+  events      SessionEvent[]
+}
+
+enum EventType {
+  DOM_CONTENT_LOADED    @map("1")
+  LOAD                  @map("2")
+  FULL_SNAPSHOT         @map("3")
+  INCREMENTAL_SNAPSHOT  @map("4")
+  META                  @map("5")
+  CUSTOM                @map("6")
+  PLUGIN                @map("7")
+}
