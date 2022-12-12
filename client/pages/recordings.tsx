@@ -1,8 +1,8 @@
-import Layout from '../components/Layout';
+import { SimpleGrid } from '@chakra-ui/react';
 import { GetServerSideProps } from 'next';
 import { useEffect } from 'react';
+import Layout from '../components/Layout';
 import Player from '../components/Player';
-import { Box, Flex, List, ListItem, SimpleGrid } from '@chakra-ui/react';
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const data = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/sessions`); // your fetch function here
@@ -26,6 +26,7 @@ export default function Recordings({ sessions }: { sessions: any }) {
           return (
             <Player
               key={session.id}
+              sessionId={session.id}
               events={session.events.map((event: any) => ({
                 ...event,
                 timestamp: new Date(event.timestamp).getTime(),

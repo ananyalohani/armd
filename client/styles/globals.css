@@ -19,3 +19,12 @@ a {
 * {
   box-sizing: border-box;
 }
+
+.rr-player {
+  box-shadow: none !important;
+  border: solid 2px var(--chakra-colors-gray-100);
+}
+
+.rr-controller {
+  border-bottom: solid 2px var(--chakra-colors-gray-100);
+}
