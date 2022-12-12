@@ -6,7 +6,7 @@ export default defineConfig({
     target: "es2021",
     lib: {
       name: "ARMD",
-      entry: resolve(__dirname, "armd.js"),
+      entry: resolve(__dirname, "src/armd.ts"),
       formats: ["umd"],
       fileName: () => "armd.js",
     },
