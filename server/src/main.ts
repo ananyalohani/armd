@@ -75,8 +75,8 @@ app.post("/sessions", async (req, res) => {
   }
 });
 
-app.get('/sessions', async (req, res) => {
-  const sessions = await prisma.session.findMany({
+app.get("/sessions", async (req, res) => {
+  const sessions = await readerDb.session.findMany({
     orderBy: {
       startTime: "desc",
     },
@@ -84,8 +84,8 @@ app.get('/sessions', async (req, res) => {
   res.json(sessions);
 });
 
-app.get('/sessions/:id', async (req, res) => {
-  const session = await prisma.session.findUnique({
+app.get("/sessions/:id", async (req, res) => {
+  const session = await readerDb.session.findUnique({
     where: {
       id: req.params.id,
     },
