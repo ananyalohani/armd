@@ -30,9 +30,6 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 };
 
 export default function Properties({ event }: any) {
-  console.log(event);
-  const pathname = event.prop_pathname.split('/')[1];
-  const url = pathname ? event.prop_host + pathname : event.prop_host;
   const userAgentData = JSON.parse(event.prop_user_agent_data);
   const source = userAgentData.mobile ? 'mobile' : 'web';
   return (
@@ -46,7 +43,7 @@ export default function Properties({ event }: any) {
             <Tr>
               <Th>Event</Th>
               <Th>Person</Th>
-              <Th>URL</Th>
+              <Th>Pathname</Th>
               <Th>Source</Th>
               <Th>Time</Th>
             </Tr>
@@ -59,7 +56,7 @@ export default function Properties({ event }: any) {
                   <Avatar name={event.prop_ip_address} size='xs' mr='1' />{' '}
                   <span>{event.prop_ip_address}</span>
                 </Td>
-                <Td>{url}</Td>
+                <Td>{event.prop_pathname}</Td>
                 <Td>{source}</Td>
                 <Td>{format(new Date(parseInt(event.datetime)), 'PPpp')}</Td>
               </Tr>

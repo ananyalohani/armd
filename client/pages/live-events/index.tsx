@@ -49,7 +49,7 @@ export default function LiveEvents() {
             <Tr>
               <Th>Event</Th>
               <Th>Person</Th>
-              <Th>URL</Th>
+              <Th>Pathname</Th>
               <Th>Source</Th>
               <Th>Time</Th>
             </Tr>
@@ -57,8 +57,6 @@ export default function LiveEvents() {
           <Tbody>
             <>
               {events.map((e) => {
-                const pathname = e.prop_pathname.split('/')[1];
-                const url = pathname ? e.prop_host + pathname : e.prop_host;
                 const userAgentData = JSON.parse(e.prop_user_agent_data);
                 const source = userAgentData.mobile ? 'mobile' : 'web';
                 return (
@@ -75,7 +73,7 @@ export default function LiveEvents() {
                       <Avatar name={e.prop_ip_address} size='xs' mr='1' />{' '}
                       <span>{e.prop_ip_address}</span>
                     </Td>
-                    <Td>{url}</Td>
+                    <Td>{e.prop_pathname}</Td>
                     <Td>{source}</Td>
                     <Td>{format(new Date(parseInt(e.datetime)), 'PPpp')}</Td>
                   </Tr>
