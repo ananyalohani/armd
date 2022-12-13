@@ -123,7 +123,6 @@ app.get("/events/pageviews", async (req, res) => {
 
 app.get("/events/domains", async (req, res) => {
   const domains = (await getDomains()) as ClientEvent;
-  console.log(domains.data);
   res.json(domains.data);
 });
 

@@ -43,7 +43,6 @@ ChartJS.register(
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <>
-      <Script src='/script.js' />
       <ChakraProvider>
         <style jsx global>
           {`
