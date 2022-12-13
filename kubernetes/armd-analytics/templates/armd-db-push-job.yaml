@@ -19,4 +19,4 @@ spec:
         - name: MASTER_DB_URL
           value: "postgresql://postgres:$(DB_PSWD)@$(DB_URL)"
       restartPolicy: Never
-  backoffLimit: 4
+  backoffLimit: 10

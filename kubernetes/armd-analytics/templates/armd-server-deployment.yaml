@@ -1,0 +1,89 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: armd-server
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: armd-server
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        app.kubernetes.io/name: armd-server
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "thesantatitan/armd-server:latest"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: server-port
+              containerPort: 3000
+              protocol: TCP
+          env:
+          - name: CLICKHOUSE_HOST
+            valueFrom:
+              secretKeyRef:
+                name: clickhouse-pswd
+                key: db-host
+          - name: CLICKHOUSE_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: clickhouse-pswd
+                key: db-pswd
+          - name: CLICKHOUSE_USERNAME
+            value: default
+          - name: CLICKHOUSE_DATABASE
+            value: armd
+          - name: KAFKA_CLIENT_ID
+            value: armd
+          - name: KAFKA_BROKERS
+            value: "armd-kafka-cluster-kafka-brokers.default:9092,armd-kafka-cluster-kafka-brokers.default:9093,armd-kafka-cluster-kafka-brokers.default:9094"
+          - name: KAFKA_TOPIC
+            value: armd-events
+          - name: DB_URL
+            value: armd-postgres
+          - name: DB_REPLICA_URL
+            value: armd-postgres
+          - name: DB_PSWD
+            valueFrom:
+              secretKeyRef:
+                name: postgres-pswd
+                key: superUserPassword
+          - name: DB_REPLICA_PSWD
+            valueFrom:
+              secretKeyRef:
+                name: postgres-pswd
+                key: superUserPassword
+          - name: MASTER_DB_URL
+            value: "postgresql://postgres:$(DB_PSWD)@$(DB_URL)"
+          - name: REPLICA_DB_URL
+            value: "postgresql://postgres:$(DB_REPLICA_PSWD)@$(DB_REPLICA_URL)"
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

@@ -37,7 +37,11 @@ securityContext: {}
   # runAsUser: 1000
 
 clientservice:
-  type: ClusterIP
+  type: LoadBalancer
+  port: 80
+
+serverservice:
+  type: LoadBalancer
   port: 80
 
 ingress:
@@ -148,7 +152,7 @@ vector:
         auth:
           strategy: basic
           user: default
-          password: hoMKdnPrWtxU
+          password: etxbQQTTCxeO
         buffer:
           max_events: 10000
         batch:

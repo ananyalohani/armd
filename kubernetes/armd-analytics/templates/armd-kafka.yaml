@@ -11,10 +11,14 @@ spec:
         port: 9092
         type: internal
         tls: false
-      - name: tls
+      - name: plain2
         port: 9093
         type: internal
-        tls: true
+        tls: false
+      - name: plain3
+        port: 9094
+        type: internal
+        tls: false
     config:
       offsets.topic.replication.factor: 3
       transaction.state.log.replication.factor: 3

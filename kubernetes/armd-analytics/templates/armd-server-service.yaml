@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: armd-server-service
+spec:
+  type: {{ .Values.serverservice.type }}
+  ports:
+    - port: {{ .Values.serverservice.port }}
+      targetPort: server-port
+      protocol: TCP
+      name: server-port
+  selector:
+    app.kubernetes.io/name: armd-server
