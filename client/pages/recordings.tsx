@@ -23,16 +23,7 @@ export default function Recordings({ sessions }: { sessions: any }) {
     <Layout heading='Session Recordings'>
       <SimpleGrid columns={2} spacing={10} key={0}>
         {sessions.map((session: any) => {
-          return (
-            <Player
-              key={session.id}
-              sessionId={session.id}
-              events={session.events.map((event: any) => ({
-                ...event,
-                timestamp: new Date(event.timestamp).getTime(),
-              }))}
-            />
-          );
+          return <Player key={session.id} sessionId={session.id} />;
         })}
       </SimpleGrid>
     </Layout>
