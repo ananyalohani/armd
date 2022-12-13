@@ -14,6 +14,7 @@ import format from 'date-fns/format';
 import Layout from '../../../components/Layout';
 
 import { GetServerSideProps } from 'next';
+import PersonAvatar from '../../../components/Avatar';
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const id = ctx.params?.id;
@@ -53,8 +54,8 @@ export default function Properties({ event }: any) {
               <Tr>
                 <Td textTransform='capitalize'>{event.type}</Td>
                 <Td display={'flex'} alignItems='center'>
-                  <Avatar name={event.prop_ip_address} size='xs' mr='1' />{' '}
-                  <span>{event.prop_ip_address}</span>
+                  <PersonAvatar name={event.prop_ip_address} />{' '}
+                  <span style={{ marginLeft: 5 }}>{event.prop_ip_address}</span>
                 </Td>
                 <Td>{event.prop_pathname}</Td>
                 <Td>{source}</Td>
