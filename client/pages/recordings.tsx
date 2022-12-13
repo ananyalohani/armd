@@ -21,7 +21,7 @@ export default function Recordings({ sessions }: { sessions: any }) {
 
   return (
     <Layout heading='Session Recordings'>
-      <SimpleGrid columns={2} spacing={10}>
+      <SimpleGrid columns={2} spacing={10} key={0}>
         {sessions.map((session: any) => {
           return (
             <Player

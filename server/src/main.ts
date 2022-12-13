@@ -2,19 +2,25 @@ import bodyParser from 'body-parser';
 import cors from 'cors';
 import 'dotenv/config';
 import express from 'express';
+import { asynchronouslyProcessEvent } from './event';
 import init from './init';
 import Logger from './logger';
-import { asynchronouslyProcessEvent } from './event';
-import prisma from './services/prisma';
 import { getEvents } from './services/clickhouse';
-import { SessionEvent } from '@prisma/client';
+import prisma from './services/prisma';
 
 const PORT = process.env.PORT || 3000;
 
 const logger = new Logger('Node');
 
 const app = express();
-app.use(cors());
+// Allow all origins
+app.use(
+  cors({
+    origin: '*',
+    methods: ['GET', 'POST'],
+    allowedHeaders: ['Content-Type'],
+  })
+);
 app.use(bodyParser.json());
 
 app.set('trust proxy', true);
@@ -84,6 +90,9 @@ app.get('/sessions', async (req, res) => {
   const sessions = await prisma.session.findMany({
     include: {
       events: true,
+    },
+    orderBy: {
+      startTime: 'desc',
     },
   });
   console.log({ sessions });

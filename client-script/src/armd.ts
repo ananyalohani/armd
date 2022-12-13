@@ -8,6 +8,7 @@ const createEventPayload = (event: Event) => {
   const target = event.target as HTMLElement;
   return {
     event: event.type,
+    sessionId: sessionStorage.getItem('ARMD_SESSION_ID'),
     properties: {
       referrer: document.referrer,
       clientX: event['clientX'],
@@ -65,10 +66,11 @@ const createSessionHandler = (baseUrl: string) => () => {
 };
 
 const startArmd = ({ base }: { base: string }) => {
+  sessionStorage.setItem('ARMD_SESSION_ID', uuidv4());
+
   const handleEvent = createHandler(base);
   const handleSessionEvents = createSessionHandler(base);
 
-  sessionStorage.setItem('ARMD_SESSION_ID', uuidv4());
   setInterval(handleSessionEvents, 10 * 1000);
 
   document.addEventListener('DOMContentLoaded', async () => {

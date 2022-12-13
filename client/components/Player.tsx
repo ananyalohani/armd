@@ -46,7 +46,7 @@ export default function Player({ events, sessionId }: Props) {
           Session <Code>{sessionId}</Code>
         </Heading>
         <Text fontSize='sm' fontWeight='normal'>
-          {format(new Date(events[0].timestamp), 'MMM dd yyyy, hh:mm:ss a')}{' '}
+          {format(new Date(events[0].timestamp), 'MMM dd yyyy, hh:mm:ss a')}
         </Text>
       </CardFooter>
     </Card>
