@@ -103,12 +103,9 @@ export const getPageviews = async (
 ) => {
   try {
     const s = parseInt(startTime);
-    const e = endTime ? parseInt(endTime) : new Date().getTime();
-    console.log(
-      `SELECT * from events WHERE type = 'pageview' AND datetime >= '${s}' AND datetime <= '${e}' ORDER BY datetime DESC`
-    );
+    const e = endTime ? parseInt(endTime) : Date.now();
     const result = await client.query({
-      query: `SELECT * from events WHERE type = 'pageview' AND datetime >= '${s}' AND datetime <= '${e}' ORDER BY datetime DESC`,
+      query: `SELECT * from events WHERE type = 'pageshow' AND datetime >= ${s} AND datetime <= ${e} ORDER BY datetime DESC`,
     });
     const events = await result.json();
     return events;

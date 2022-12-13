@@ -1,5 +1,5 @@
 import { SimpleGrid } from '@chakra-ui/react';
-import ActiveUsersDashboard from '../components/dashboards/ActiveUsersDashboard';
+import ActiveSessionsDashboard from '../components/dashboards/ActiveSessionsDashboard';
 import CountriesVisitingDashboard from '../components/dashboards/CountriesVisitingDashboard';
 import PageViewsDashboard from '../components/dashboards/PageViewsDashboard';
 import ReferringDomainDashboard from '../components/dashboards/ReferringDomainDashboard';
@@ -18,7 +18,7 @@ export default function Dashboards() {
   return (
     <Layout heading='Dashboards'>
       <SimpleGrid columns={2} spacing={8}>
-        <ActiveUsersDashboard />
+        <ActiveSessionsDashboard />
         <PageViewsDashboard />
         <ReferringDomainDashboard />
         <RouteViewsDashboard />

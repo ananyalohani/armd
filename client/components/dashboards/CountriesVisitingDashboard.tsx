@@ -24,6 +24,20 @@ const countries = [
 ].sort((a, b) => b.count - a.count);
 
 export default function CountriesVisitingDashboard({}: Props) {
+  const [countries, setCountries] = useState<any[]>([]);
+
+  const fetchCountries = async () => {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_BASE_URL}/events/countries`
+    );
+    const data = await res.json();
+    setCountries(data);
+  };
+
+  useEffect(() => {
+    fetchCountries();
+  }, []);
+
   return (
     <Card backgroundColor='white'>
       <CardBody>
@@ -59,7 +73,7 @@ export default function CountriesVisitingDashboard({}: Props) {
                 labels: countries.map((c) => c.country),
                 datasets: [
                   {
-                    label: 'Referring Domain',
+                    label: 'Countries',
                     data: countries.map((c) => c.count),
                     backgroundColor: [
                       '#F6AD5595',

@@ -77,7 +77,7 @@ export default function LiveEvents() {
                     </Td>
                     <Td>{url}</Td>
                     <Td>{source}</Td>
-                    <Td>{format(new Date(e.datetime), 'PPpp')}</Td>
+                    <Td>{format(new Date(parseInt(e.datetime)), 'PPpp')}</Td>
                   </Tr>
                 );
               })}
