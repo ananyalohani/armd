@@ -1,26 +1,47 @@
-<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sample HTML Page</title>
     <script src="/dist/armd.js"></script>
     <script>
-      startArmd({ base: 'https://armd-server.lhn.fyi' });
+      startArmd({ base: "https://cldc.mhr.cx" });
     </script>
-    <title>Client script test app</title>
   </head>
   <body>
-    <h1>Client script test app</h1>
+    <button id="btn1">Button 1</button>
+    <button id="btn2">Button 2</button>
+    <div class="container">
+      <div class="inner-container">
+        <button id="btn3">Button 3</button>
+      </div>
+    </div>
+    <a href="/" target="_blank" id="link1">Test website</a>
+    <div
+      class="container"
+      style="background: red; width: 200px; height: 200px"
+    ></div>
+    <img
+      id="cute-puppy"
+      src="https://picsum.photos/id/237/200"
+      style="width: 200px; imae"
+    />
     <p>
-      This is a test app to test the client script functionality of the
-      <a href="example.com" target="_blank">example.com</a> project.
+      Non voluptate duis mollit ut mollit do ullamco. Elit aute veniam culpa qui
+      labore ea mollit tempor consequat est. Ad anim tempor esse ipsum ad
+      incididunt ipsum officia aliqua ea cupidatat. Sunt tempor tempor enim in
+      laboris eiusmod commodo sunt incididunt. Elit irure dolor id ullamco aute
+      officia reprehenderit excepteur proident esse reprehenderit mollit irure
+      quis.
     </p>
-    <p>
-      The client script is a JavaScript file that is loaded in the browser when
-      the app is opened. It can be used to add custom functionality to the app.
-    </p>
-    <!-- Buttons -->
-    <button id="button1">Button 1</button>
-    <button id="button2">Button 2</button>
+    <div>
+      <h2>Pages</h2>
+      <a href="/">Page 1</a>
+      <a href="/test/page-2.html">Page 2</a>
+      <a href="/test/page-3.html">Page 3</a>
+      <a href="/test/page-4.html">Page 4</a>
+      <a href="/test/page-5.html">Page 5</a>
+    </div>
   </body>
 </html>
