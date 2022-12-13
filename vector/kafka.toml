@@ -1,3 +1,5 @@
+api.enabled = true
+
 [sources.events]
 type = "kafka"
 bootstrap_servers = "${KAFKA_BROKERS}"

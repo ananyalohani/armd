@@ -1,11 +1,11 @@
-import { Kafka } from 'kafkajs';
-import Logger from '../logger';
+import { Kafka } from "kafkajs";
+import Logger from "../logger";
 
-const logger = new Logger('Kafka');
+const logger = new Logger("Kafka");
 
 const kafka = new Kafka({
   clientId: process.env.KAFKA_CLIENT_ID,
-  brokers: process.env.KAFKA_BROKERS?.split(',') || [],
+  brokers: process.env.KAFKA_BROKERS?.split(",") || [],
   logLevel: 1,
   logCreator:
     () =>
@@ -22,9 +22,9 @@ const producer = kafka.producer();
 
 export const init = async () => {
   try {
-    logger.info('Connecting to Kafka...');
+    logger.info("Connecting to Kafka...");
     producer.connect();
-    logger.info('Connected to Kafka');
+    logger.info("Connected to Kafka");
   } catch (error) {
     logger.error(`Failed to connect to Kafka: ${error}`);
   }
@@ -33,7 +33,7 @@ export const init = async () => {
 export const sendEvent = async (event: Partial<ClickHouseEvent>) => {
   try {
     const [record] = await producer.send({
-      topic: process.env.KAFKA_TOPIC || '',
+      topic: process.env.KAFKA_TOPIC || "",
       messages: [
         {
           key: event.id,

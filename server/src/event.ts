@@ -1,7 +1,7 @@
-import { getGeoData } from './services/maxmind';
-import { sendEvent } from './services/kafka';
-import prisma from './services/prisma';
-import cuid from 'cuid';
+import { getGeoData } from "./services/maxmind";
+import { sendEvent } from "./services/kafka";
+import { writerDb } from "./services/prisma";
+import cuid from "cuid";
 
 const snakeCase = (str: string) =>
   str.replace(/[A-Z]/g, (letter) => `_${letter.toLowerCase()}`);
@@ -49,7 +49,7 @@ export const asynchronouslyProcessEvent = async ({
   const clickhouseEvent = transformEvent(event);
 
   // Create a Person record in Postgres if it doesn't exist
-  const createPersonPromise = prisma.person.upsert({
+  const createPersonPromise = writerDb.person.upsert({
     create: {
       ipAddress: event.properties.ipAddress,
       country: event.properties.country,

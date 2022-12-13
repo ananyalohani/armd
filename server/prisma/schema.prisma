@@ -4,7 +4,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url      = env("MASTER_DB_URL")
 }
 
 model Person {
@@ -15,28 +15,28 @@ model Person {
 }
 
 model SessionEvent {
-  id          String @id @default(uuid())
-  type        Int
-  timestamp   DateTime
-  delay       Int?
-  data        Json?
-  session     Session  @relation(fields: [sessionId], references: [id])
-  sessionId   String
+  id        String   @id @default(uuid())
+  type      Int
+  timestamp DateTime
+  delay     Int?
+  data      Json?
+  session   Session  @relation(fields: [sessionId], references: [id])
+  sessionId String
 }
 
 model Session {
-  id          String @id
-  startTime   DateTime
-  endTime     DateTime
-  events      SessionEvent[]
+  id        String         @id
+  startTime DateTime
+  endTime   DateTime
+  events    SessionEvent[]
 }
 
 enum EventType {
-  DOM_CONTENT_LOADED    @map("1")
-  LOAD                  @map("2")
-  FULL_SNAPSHOT         @map("3")
-  INCREMENTAL_SNAPSHOT  @map("4")
-  META                  @map("5")
-  CUSTOM                @map("6")
-  PLUGIN                @map("7")
+  DOM_CONTENT_LOADED   @map("1")
+  LOAD                 @map("2")
+  FULL_SNAPSHOT        @map("3")
+  INCREMENTAL_SNAPSHOT @map("4")
+  META                 @map("5")
+  CUSTOM               @map("6")
+  PLUGIN               @map("7")
 }
