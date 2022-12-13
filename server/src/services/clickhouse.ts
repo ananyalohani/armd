@@ -9,7 +9,7 @@ const CREATE_EVENTS_TABLE = `
   CREATE TABLE IF NOT EXISTS events (
     id String,
     type String,
-    datetime DateTime,
+    datetime String,
     sessionId String,
     prop_ip String,
     prop_country String,
@@ -73,11 +73,87 @@ export const init = async () => {
 export const getEvents = async () => {
   try {
     const result = await client.query({
-      query: 'SELECT * FROM events',
+      query: 'SELECT * FROM events ORDER BY datetime DESC',
     });
     const events = await result.json();
     return events;
   } catch (error) {
     logger.error(`Failed to get events: ${error}`);
+  }
+};
+
+export const getEventsById = async (id: string) => {
+  try {
+    const result = await client.query({
+      query: `SELECT * FROM events WHERE id = '${id}'`,
+    });
+    const events = await result.json();
+    return events;
+  } catch (error) {
+    logger.error(`Failed to get events: ${error}`);
+  }
+};
+
+export const getPageviews = async (
+  startTime: string,
+  endTime: string | undefined
+) => {
+  try {
+    const s = new Date(parseInt(startTime))
+      .toISOString()
+      .replace('T', ' ')
+      .replace('Z', '');
+    const e = endTime
+      ? new Date(parseInt(endTime))
+          .toISOString()
+          .replace('T', ' ')
+          .replace('Z', '')
+      : new Date().toISOString().replace('T', ' ').replace('Z', '');
+    console.log(
+      `SELECT * from events WHERE type = 'pageview' AND datetime >= '${s}' AND datetime <= '${e}' ORDER BY datetime DESC`
+    );
+    const result = await client.query({
+      query: `SELECT * from events WHERE type = 'pageview' AND datetime >= '${s}' AND datetime <= '${e}' ORDER BY datetime DESC`,
+    });
+    const events = await result.json();
+    return events;
+  } catch (error) {
+    logger.error(`Failed to get pageviews: ${error}`);
+  }
+};
+
+export const getDomains = async () => {
+  try {
+    const result = await client.query({
+      query: `SELECT prop_referrer as domain, COUNT(prop_referrer) as count from events WHERE type='pageshow' GROUP BY prop_referrer ORDER BY count DESC LIMIT 5`,
+    });
+    const events = await result.json();
+    return events;
+  } catch (error) {
+    logger.error(`Failed to get domains: ${error}`);
+  }
+};
+
+export const getPaths = async () => {
+  try {
+    const result = await client.query({
+      query: `SELECT prop_pathname as path, COUNT(prop_pathname) as count from events WHERE type='pageshow' GROUP BY prop_pathname ORDER BY count DESC LIMIT 5`,
+    });
+    const events = await result.json();
+    return events;
+  } catch (error) {
+    logger.error(`Failed to get paths: ${error}`);
+  }
+};
+
+export const getCountries = async () => {
+  try {
+    const result = await client.query({
+      query: `SELECT prop_country as country, COUNT(prop_country) as count from events WHERE type='pageshow' GROUP BY prop_country ORDER BY count DESC LIMIT 5`,
+    });
+    const events = await result.json();
+    return events;
+  } catch (error) {
+    logger.error(`Failed to get countries: ${error}`);
   }
 };

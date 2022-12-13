@@ -12,6 +12,8 @@ import {
 } from '@chakra-ui/react';
 import Layout from '../../components/Layout';
 import format from 'date-fns/format';
+import { useEffect, useState } from 'react';
+import { useInterval } from '../../hooks/useInterval';
 
 export interface Event {
   event: string;
@@ -22,6 +24,23 @@ export interface Event {
 }
 
 export default function LiveEvents() {
+  const [events, setEvents] = useState<any[]>([]);
+
+  const fetchEvents = async () => {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/events`);
+    const data = await res.json();
+    setEvents(data);
+  };
+
+  useEffect(() => {
+    fetchEvents();
+  }, []);
+
+  // Poll for new events every minute
+  const REFRESH_INTERVAL = 1000 * 60;
+
+  useInterval(fetchEvents, REFRESH_INTERVAL);
+
   return (
     <Layout heading='Live Events'>
       <TableContainer background={'white'} borderRadius='8' maxW='full'>
@@ -37,19 +56,19 @@ export default function LiveEvents() {
           </Thead>
           <Tbody>
             <>
-              {events.map((e, idx) => {
-                const pathname = e.properties.pathname.split('/')[1];
-                const url = pathname
-                  ? e.properties.host + pathname
-                  : e.properties.host;
-                const source = e.properties.userAgentData.mobile
-                  ? 'mobile'
-                  : 'web';
+              {events.map((e) => {
+                const pathname = e.prop_pathname.split('/')[1];
+                const url = pathname ? e.prop_host + pathname : e.prop_host;
+                const userAgentData = JSON.parse(e.prop_user_agent_data);
+                const source = userAgentData.mobile ? 'mobile' : 'web';
                 return (
-                  <Tr key={idx}>
+                  <Tr key={e.id}>
                     <Td textTransform='capitalize'>
-                      <Link href='/live-events/a/properties' color='purple.700'>
-                        {e.event}
+                      <Link
+                        href={`/live-events/${e.id}/properties`}
+                        color='purple.700'
+                      >
+                        {e.type}
                       </Link>
                     </Td>
                     <Td display={'flex'} alignItems='center'>
@@ -58,7 +77,7 @@ export default function LiveEvents() {
                     </Td>
                     <Td>{url}</Td>
                     <Td>{source}</Td>
-                    <Td>{format(e.timestamp, 'PPpp')}</Td>
+                    <Td>{format(new Date(e.datetime), 'PPpp')}</Td>
                   </Tr>
                 );
               })}
@@ -69,193 +88,3 @@ export default function LiveEvents() {
     </Layout>
   );
 }
-
-const events: Event[] = [
-  {
-    event: 'dblclick',
-    timestamp: 1670246056958,
-    properties: {
-      clientX: 51,
-      clientY: 19,
-      offsetX: 41,
-      offsetY: 9,
-      pageX: 51,
-      pageY: 19,
-      screenX: 999,
-      screenY: -950,
-      host: '127.0.0.1',
-      pathname: '/',
-      userAgent:
-        'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36',
-      userAgentData: {
-        brands: [
-          {
-            brand: 'Google Chrome',
-            version: '107',
-          },
-          {
-            brand: 'Chromium',
-            version: '107',
-          },
-          {
-            brand: 'Not=A?Brand',
-            version: '24',
-          },
-        ],
-        mobile: false,
-        platform: 'macOS',
-      },
-      clientWidth: 1227,
-      clientHeight: 969,
-      screenWidth: 1920,
-      screenHeight: 1080,
-      innerText: 'Button 1',
-    },
-  },
-  {
-    event: 'scroll',
-    timestamp: 1670246019801,
-    properties: {
-      host: '127.0.0.1',
-      pathname: '/',
-      device: 'mobile',
-      userAgent:
-        'Mozilla/5.0 (iPhone; CPU iPhone OS 16_1_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.1 Mobile/15E148 Safari/604.1',
-      userAgentData: {
-        brands: [
-          {
-            brand: 'Google Chrome',
-            version: '107',
-          },
-          {
-            brand: 'Chromium',
-            version: '107',
-          },
-          {
-            brand: 'Not=A?Brand',
-            version: '24',
-          },
-        ],
-        mobile: true,
-        platform: 'Android',
-      },
-      clientWidth: 309,
-      clientHeight: 662,
-      screenWidth: 309,
-      screenHeight: 352,
-    },
-  },
-  {
-    event: 'click',
-    timestamp: 1670246002307,
-    properties: {
-      clientX: 53,
-      clientY: 21,
-      offsetX: 44,
-      offsetY: 12,
-      pageX: 53,
-      pageY: 21,
-      screenX: 1001,
-      screenY: -948,
-      host: '127.0.0.1',
-      pathname: '/',
-      userAgent:
-        'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36',
-      userAgentData: {
-        brands: [
-          {
-            brand: 'Google Chrome',
-            version: '107',
-          },
-          {
-            brand: 'Chromium',
-            version: '107',
-          },
-          {
-            brand: 'Not=A?Brand',
-            version: '24',
-          },
-        ],
-        mobile: false,
-        platform: 'macOS',
-      },
-      clientWidth: 1227,
-      clientHeight: 969,
-      screenWidth: 1920,
-      screenHeight: 1080,
-      innerText: 'Button 1',
-    },
-  },
-  {
-    event: 'click',
-    timestamp: 1670245984591,
-    properties: {
-      clientX: 128,
-      clientY: 195,
-      offsetX: 121,
-      offsetY: 127,
-      pageX: 128,
-      pageY: 195,
-      screenX: 1076,
-      screenY: -774,
-      host: '127.0.0.1',
-      pathname: '/',
-      userAgent:
-        'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36',
-      userAgentData: {
-        brands: [
-          {
-            brand: 'Google Chrome',
-            version: '107',
-          },
-          {
-            brand: 'Chromium',
-            version: '107',
-          },
-          {
-            brand: 'Not=A?Brand',
-            version: '24',
-          },
-        ],
-        mobile: false,
-        platform: 'macOS',
-      },
-      clientWidth: 1227,
-      clientHeight: 969,
-      screenWidth: 1920,
-      screenHeight: 1080,
-    },
-  },
-  {
-    event: 'pageshow',
-    timestamp: 1670245805502,
-    properties: {
-      host: '127.0.0.1',
-      pathname: '/',
-      userAgent:
-        'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36',
-      userAgentData: {
-        brands: [
-          {
-            brand: 'Google Chrome',
-            version: '107',
-          },
-          {
-            brand: 'Chromium',
-            version: '107',
-          },
-          {
-            brand: 'Not=A?Brand',
-            version: '24',
-          },
-        ],
-        mobile: false,
-        platform: 'macOS',
-      },
-      clientWidth: 1920,
-      clientHeight: 969,
-      screenWidth: 1920,
-      screenHeight: 1080,
-    },
-  },
-];

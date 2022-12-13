@@ -8,7 +8,7 @@ const snakeCase = (str: string) =>
 
 const transformEvent = (event: ArmdEvent): Partial<ClickHouseEvent> => {
   const { id, type, sessionId, properties } = event;
-  const datetime = new Date().toISOString().replace('T', ' ').split('.')[0];
+  const datetime = new Date().toISOString().replace('T', ' ').replace('Z', '');
   const clickhouseEvent: Partial<ClickHouseEvent> = {
     id,
     type,
@@ -38,6 +38,10 @@ export const asynchronouslyProcessEvent = async ({
     ipAddress,
     country,
     continent,
+    referrer:
+      event.properties.referrer.length > 0
+        ? event.properties.referrer
+        : 'direct',
   };
 
   // Transform to clickhouse event
