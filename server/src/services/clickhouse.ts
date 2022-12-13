@@ -11,7 +11,7 @@ const CREATE_EVENTS_TABLE = `
     type String,
     datetime Int64,
     sessionId String,
-    prop_ip String,
+    prop_ip_address String,
     prop_country String,
     prop_continent String,
     prop_referrer Nullable(String),
