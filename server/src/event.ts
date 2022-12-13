@@ -8,7 +8,7 @@ const snakeCase = (str: string) =>
 
 const transformEvent = (event: ArmdEvent): Partial<ClickHouseEvent> => {
   const { id, type, sessionId, properties } = event;
-  const datetime = new Date().toISOString().replace("T", " ").replace("Z", "");
+  const datetime = Date.now();
   const clickhouseEvent: Partial<ClickHouseEvent> = {
     id,
     type,
