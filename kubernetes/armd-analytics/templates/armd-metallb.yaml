@@ -1,0 +1,38 @@
+---
+apiVersion: metallb.io/v1beta1
+kind: IPAddressPool
+metadata:
+  name: armd-ip-pool
+  namespace: metallb-system
+spec:
+  addresses:
+    - 128.105.144.160/32
+    - 128.105.144.152/32
+    - 128.105.144.193/32
+    - 128.105.144.195/32
+    - 128.105.144.97/32
+    - 128.105.144.199/32
+    - 128.105.144.85/32
+    - 128.105.144.102/32
+    - 128.105.144.87/32
+    - 128.105.144.198/32
+    - 128.105.144.200/32
+    - 128.105.144.145/32
+    - 128.105.144.157/32
+    - 128.105.144.77/32
+    - 128.105.144.105/32
+    - 128.105.144.93/32
+    - 128.105.144.150/32
+    - 128.105.144.187/32
+    - 128.105.144.100/32
+
+  autoAssign: true
+---
+apiVersion: metallb.io/v1beta1
+kind: L2Advertisement
+metadata:
+  name: armd-l2-advertisement
+  namespace: metallb-system
+spec:
+  ipAddressPools:
+  - default
