@@ -31,8 +31,8 @@ export default function ReferringDomainDashboard({}: Props) {
         >
           <Heading fontSize='md'>Referring domain</Heading>
           <Text fontSize='sm'>
-            Shows the most common referring domains for your users over the past
-            14 days.
+            Shows the 5 most common referring domains for your users to your
+            website.
           </Text>
         </VStack>
         <Bar

@@ -32,8 +32,8 @@ export default function RouteViewsDashboard({}: Props) {
         >
           <Heading fontSize='md'>Route views</Heading>
           <Text fontSize='sm'>
-            Shows the most commonly visited routes by your users over the past
-            14 days.
+            Shows the 5 most commonly visited routes for your users on your
+            website.
           </Text>
         </VStack>
         <Bar
