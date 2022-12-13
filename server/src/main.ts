@@ -126,11 +126,6 @@ app.get('/events', async (req, res) => {
   res.json(events.data);
 });
 
-app.get('/events/:id', async (req, res) => {
-  const events = (await getEventsById(req.params.id)) as ClientEvent;
-  res.json(events.data);
-});
-
 app.get('/events/pageviews', async (req, res) => {
   const { startTime, endTime } = req.query;
   if (!startTime) {
@@ -148,6 +143,7 @@ app.get('/events/pageviews', async (req, res) => {
 
 app.get('/events/domains', async (req, res) => {
   const domains = (await getDomains()) as ClientEvent;
+  console.log(domains.data);
   res.json(domains.data);
 });
 
@@ -161,6 +157,11 @@ app.get('/events/countries', async (req, res) => {
   res.json(countries.data);
 });
 
+app.get('/events/:id', async (req, res) => {
+  const events = (await getEventsById(req.params.id)) as ClientEvent;
+  res.json(events.data);
+});
+
 async function main() {
   await init(logger);
   app.listen(PORT, () => {
@@ -169,5 +170,3 @@ async function main() {
 }
 
 main();
-
-console.log(new Date('2022-12-13 08:38:50.000').getTime());
