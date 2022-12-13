@@ -108,3 +108,43 @@ gloo:
     enabled: false
   ingress:
     enabled: true
+
+vector:
+  sources:
+    events:
+      type: kafka
+      bootstrap_servers: armd-kafka-cluster-kafka-bootstrap.default
+      group_id: default
+      key_field: message
+      topics:
+      - armd-events
+  transforms:
+    remove_fields:
+      type: remap
+      inputs:
+      - events
+      source: |-
+          del(.timestamp)
+          del(.message)
+          del(.topic)
+          del(.partition)
+          del(.offset)
+          del(.headers)
+          del(.source_type)
+  sinks:
+    clickhouse:
+      type: clickhouse
+      inputs:
+      - remove_fields
+      endpoint: "https://xixh5x0xy3.ap-south-1.aws.clickhouse.cloud:8443"
+      database: armd
+      table: events
+      skip_unknown_fields: true
+      auth:
+        strategy: basic
+        user: default
+        password: hoMKdnPrWtxU
+        buffer:
+          max_events: 10000
+        batch:
+          timeout_secs: 1
