@@ -9,9 +9,9 @@ const CREATE_EVENTS_TABLE = `
   CREATE TABLE IF NOT EXISTS events (
     id String,
     type String,
-    datetime String,
+    datetime Int64,
     sessionId String,
-    prop_ip String,
+    prop_ip_address String,
     prop_country String,
     prop_continent String,
     prop_referrer Nullable(String),
@@ -58,6 +58,9 @@ export const init = async () => {
       return;
     }
     logger.info('Creating events table...');
+    // await client.exec({
+    //   query: "DROP TABLE IF EXISTS events",
+    // });
     await client.exec({
       query: CREATE_EVENTS_TABLE,
       clickhouse_settings: {
@@ -99,16 +102,8 @@ export const getPageviews = async (
   endTime: string | undefined
 ) => {
   try {
-    const s = new Date(parseInt(startTime))
-      .toISOString()
-      .replace('T', ' ')
-      .replace('Z', '');
-    const e = endTime
-      ? new Date(parseInt(endTime))
-          .toISOString()
-          .replace('T', ' ')
-          .replace('Z', '')
-      : new Date().toISOString().replace('T', ' ').replace('Z', '');
+    const s = parseInt(startTime);
+    const e = endTime ? parseInt(endTime) : new Date().getTime();
     console.log(
       `SELECT * from events WHERE type = 'pageview' AND datetime >= '${s}' AND datetime <= '${e}' ORDER BY datetime DESC`
     );

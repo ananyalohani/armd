@@ -49,3 +49,11 @@ export const sendEvent = async (event: Partial<ClickHouseEvent>) => {
     logger.error(`Failed to send event to Kafka: ${error}`);
   }
 };
+
+const admin = kafka.admin();
+
+// (async () => {
+//   await admin.deleteTopics({
+//     topics: ['armd-events'],
+//   });
+// })();

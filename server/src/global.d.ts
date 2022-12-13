@@ -27,9 +27,9 @@ interface ArmdEventProperties extends Record<string, any> {
 interface ClickHouseEvent extends Record<string, any> {
   id: string;
   type: string;
-  datetime: string;
+  datetime: number;
   sessionId: string;
-  prop_ip: string;
+  prop_ip_address: string;
   prop_country: string;
   prop_continent: string;
   prop_referrer?: string;
