@@ -149,3 +149,37 @@ export const getCountries = async () => {
     logger.error(`Failed to get countries: ${error}`);
   }
 };
+
+export const getFunnelData = async () => {
+  const query = `
+    SELECT PathnameCount as pageviews, COUNT(sessionId) as sessions
+    FROM
+      (
+        SELECT events.sessionId, COUNT(DISTINCT events.prop_pathname) AS PathnameCount
+        FROM events
+        WHERE events.type = 'pageshow'
+        GROUP BY events.sessionId
+      )
+    GROUP BY PathnameCount
+    ORDER BY PathnameCount DESC
+  `;
+  try {
+    const result = await client.query({
+      query,
+    });
+    const { data: funnels } = await result.json<{
+      data: { pageviews: string; sessions: string }[];
+    }>();
+    const funnelData = funnels.map((funnel) => [
+      parseInt(funnel.pageviews),
+      parseInt(funnel.sessions),
+    ]);
+    return Array.from({ length: funnelData[0][0] }, (_, index) =>
+      funnelData
+        .filter(([pv]) => pv >= index + 1)
+        .reduce((acc, [, sessions]) => acc + sessions, 0)
+    );
+  } catch (error) {
+    logger.error(`Failed to get funnel data: ${error}`);
+  }
+};

@@ -10,6 +10,7 @@ import {
   getDomains,
   getEvents,
   getEventsById,
+  getFunnelData,
   getPageviews,
   getPaths,
 } from "./services/clickhouse";
@@ -165,6 +166,11 @@ app.get("/events/sessions", async (req, res) => {
 app.get("/events/:id", async (req, res) => {
   const events = (await getEventsById(req.params.id)) as ClientEvent;
   res.json(events.data);
+});
+
+app.get("/funnels", async (req, res) => {
+  const funnels = await getFunnelData();
+  res.json(funnels);
 });
 
 async function main() {
