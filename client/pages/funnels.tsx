@@ -6,7 +6,7 @@ export default function Funnels() {
   return (
     <Layout heading="Funnels">
       <Text mb="10">
-        Shows how many of your users have completed 3 page views.
+        Shows how many of your users have completed 1 to 5 page views.
       </Text>
       <PageviewFunnelsDashboard />
     </Layout>

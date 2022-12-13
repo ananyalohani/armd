@@ -10,7 +10,7 @@ export default function PageviewFunnelsDashboard({}: Props) {
   const fetchFunnel = async () => {
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/funnels`);
     const data = await res.json();
-    setFunnel(data);
+    setFunnel(data.slice(0, 5));
   };
 
   useEffect(() => {
