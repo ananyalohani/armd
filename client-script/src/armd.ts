@@ -107,7 +107,3 @@ const startArmd = ({ base }: { base: string }) => {
 };
 
 window['startArmd'] = startArmd;
-
-// Find timestamp for 7 days before now
-const sevenDaysAgo = new Date();
-sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
