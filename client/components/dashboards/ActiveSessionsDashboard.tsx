@@ -17,15 +17,15 @@ enum TimePeriod {
   MONTH = 30,
 }
 
-export default function PageViewsDashboard() {
+export default function ActiveSessionsDashboard() {
   const [timePeriod, setTimePeriod] = useState<TimePeriod>(TimePeriod.WEEK);
-  const [pageViews, setPageViews] = useState<number[]>([]);
+  const [activeSessions, setActiveSessions] = useState<number[]>([]);
   const dateRange: number[] = Array.from({ length: timePeriod }, (_, i) =>
     new Date().setDate(new Date().getDate() - i)
   ).reverse();
 
-  const isOnDay = (timestamp: number, day: number) => {
-    const date = new Date(timestamp);
+  const isOnDay = (startTime: string, day: number) => {
+    const date = new Date(startTime);
     return (
       date.getDate() === new Date(day).getDate() &&
       date.getMonth() === new Date(day).getMonth() &&
@@ -33,23 +33,24 @@ export default function PageViewsDashboard() {
     );
   };
 
-  const fetchPageViews = async (dateRange: number[]) => {
+  const fetchActiveSessions = async (dateRange: number[]) => {
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_BASE_URL}/events/pageviews?startTime=${dateRange[0]}`
+      `${process.env.NEXT_PUBLIC_API_BASE_URL}/events/sessions?startTime=${dateRange[0]}`
     );
-    const data = (await res.json()) as any[];
-    const pageViews: number[] = [];
+    const data = await res.json();
+    console.log(data);
+    const activeSessions: number[] = [];
     dateRange.map((date) => {
-      const pageView = data.filter((event) =>
-        isOnDay(parseInt(event.datetime), date)
+      const activeSession = data.filter((session: any) =>
+        isOnDay(session.startTime, date)
       );
-      pageViews.push(pageView.length);
+      activeSessions.push(activeSession.length);
     });
-    setPageViews(pageViews);
+    setActiveSessions(activeSessions);
   };
 
   useEffect(() => {
-    fetchPageViews(dateRange);
+    fetchActiveSessions(dateRange);
   }, [timePeriod]);
 
   return (
@@ -62,11 +63,11 @@ export default function PageViewsDashboard() {
             pl='3'
             py='1'
             mb='2'
-            borderColor='red.200'
+            borderColor='purple.200'
           >
-            <Heading fontSize='md'>Page views</Heading>
+            <Heading fontSize='md'>Active sessions</Heading>
             <Text fontSize='sm'>
-              Shows the number of pageviews on your app.
+              Shows the number of unique sessions created in your app.
             </Text>
           </VStack>
           <Select
@@ -107,9 +108,9 @@ export default function PageViewsDashboard() {
           data={{
             datasets: [
               {
-                data: pageViews,
-                borderColor: '#F5656595',
-                pointBorderColor: '#F56565',
+                data: activeSessions,
+                borderColor: '#B794F495',
+                pointBorderColor: '#B794F4',
               },
             ],
             labels: dateRange.map((date) => format(date, 'MMM dd')),

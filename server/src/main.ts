@@ -135,6 +135,24 @@ app.get('/events/countries', async (req, res) => {
   res.json(countries.data);
 });
 
+app.get('/events/sessions', async (req, res) => {
+  const { startTime, endTime } = req.query;
+  if (!startTime) {
+    res.json({
+      message: 'Missing startTime',
+    });
+  }
+  const sessions = await prisma.session.findMany({
+    where: {
+      startTime: {
+        gte: new Date(parseInt(startTime as string)),
+        lte: endTime ? new Date(parseInt(endTime as string)) : new Date(),
+      },
+    },
+  });
+  res.json(sessions);
+});
+
 app.get('/events/:id', async (req, res) => {
   const events = (await getEventsById(req.params.id)) as ClientEvent;
   res.json(events.data);
