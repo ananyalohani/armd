@@ -2,7 +2,6 @@ apiVersion: kubegres.reactive-tech.io/v1
 kind: Kubegres
 metadata:
   name: armd-postgres
-  namespace: default
 
 spec:
 
