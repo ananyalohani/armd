@@ -7,15 +7,15 @@ type Props = {};
 export default function RouteViewsDashboard({}: Props) {
   const [routes, setRoutes] = useState<any[]>([]);
 
-  useEffect(() => {
-    const fetchRoutes = async () => {
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/events/paths`
-      );
-      const data = await res.json();
-      setRoutes(data);
-    };
+  const fetchRoutes = async () => {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_BASE_URL}/events/paths`
+    );
+    const data = await res.json();
+    setRoutes(data);
+  };
 
+  useEffect(() => {
     fetchRoutes();
   }, []);
 
