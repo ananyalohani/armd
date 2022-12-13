@@ -3,10 +3,12 @@ import {
   BoxProps,
   Drawer,
   DrawerContent,
+  DrawerFooter,
   Flex,
   FlexProps,
   Icon,
   IconButton,
+  Text,
   useColorModeValue,
   useDisclosure,
 } from '@chakra-ui/react';
@@ -35,7 +37,6 @@ const LinkItems: Array<LinkItemProps> = [
   { name: 'Live Events', icon: HiStatusOnline, href: 'live-events' },
   { name: 'Funnels', icon: HiFilter, href: '/funnels' },
   { name: 'Session Recordings', icon: HiFilm, href: '/recordings' },
-  { name: 'Settings', icon: HiCog, href: '/settings' },
 ];
 
 export default function SimpleSidebar({ children }: { children: ReactNode }) {
@@ -44,8 +45,9 @@ export default function SimpleSidebar({ children }: { children: ReactNode }) {
     <Box minH='100vh' bg={useColorModeValue('gray.100', 'gray.900')}>
       <SidebarContent
         onClose={() => onClose}
-        display={{ base: 'none', md: 'block' }}
+        display={{ base: 'none', md: 'flex' }}
       />
+
       <Drawer
         autoFocus={false}
         isOpen={isOpen}
@@ -58,6 +60,9 @@ export default function SimpleSidebar({ children }: { children: ReactNode }) {
         <DrawerContent>
           <SidebarContent onClose={onClose} />
         </DrawerContent>
+        <DrawerFooter>
+          <Text>&copy; Made by Ananya, Raghav, Dev and Mihir</Text>
+        </DrawerFooter>
       </Drawer>
       {/* mobilenav */}
       <MobileNav display={{ base: 'flex', md: 'none' }} onOpen={onOpen} />
@@ -74,24 +79,38 @@ interface SidebarProps extends BoxProps {
 
 const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
   return (
-    <Box
+    <Flex
       bg={useColorModeValue('white', 'gray.900')}
       borderRight='1px'
       borderRightColor={useColorModeValue('gray.200', 'gray.700')}
       w={{ base: 'full', md: 60 }}
       pos='fixed'
       h='full'
+      display={'flex'}
+      flexDirection='column'
+      justifyContent='space-between'
       {...rest}
     >
-      <Flex my='4' alignItems='center' mx='6' justifyContent='space-between'>
-        <Logo />
-      </Flex>
-      {LinkItems.map((link) => (
-        <NavItem key={link.name} icon={link.icon} href={link.href} my='2'>
-          {link.name}
-        </NavItem>
-      ))}
-    </Box>
+      <Box flex={1}>
+        <Flex my='4' alignItems='center' mx='6' justifyContent='space-between'>
+          <Logo />
+        </Flex>
+        {LinkItems.map((link) => (
+          <NavItem key={link.name} icon={link.icon} href={link.href} my='2'>
+            {link.name}
+          </NavItem>
+        ))}
+      </Box>
+      <Text
+        fontSize='xs'
+        my='2'
+        textAlign='center'
+        fontWeight='bold'
+        color='gray.500'
+      >
+        &copy; Made by Group 50
+      </Text>
+    </Flex>
   );
 };
 

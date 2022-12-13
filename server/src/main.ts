@@ -103,7 +103,6 @@ app.get('/sessions', async (req, res) => {
       startTime: 'desc',
     },
   });
-  console.log({ sessions });
   res.json(sessions);
 });
 
@@ -143,7 +142,6 @@ app.get('/events/pageviews', async (req, res) => {
 
 app.get('/events/domains', async (req, res) => {
   const domains = (await getDomains()) as ClientEvent;
-  console.log(domains.data);
   res.json(domains.data);
 });
 
