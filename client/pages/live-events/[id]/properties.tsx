@@ -61,7 +61,7 @@ export default function Properties({ event }: any) {
                 </Td>
                 <Td>{url}</Td>
                 <Td>{source}</Td>
-                <Td>{format(new Date(event.datetime), 'PPpp')}</Td>
+                <Td>{format(new Date(parseInt(event.datetime)), 'PPpp')}</Td>
               </Tr>
             </>
           </Tbody>
