@@ -1,10 +1,10 @@
-import bodyParser from "body-parser";
-import cors from "cors";
-import "dotenv/config";
-import express from "express";
-import { asynchronouslyProcessEvent } from "./event";
-import init from "./init";
-import Logger from "./logger";
+import bodyParser from 'body-parser';
+import cors from 'cors';
+import 'dotenv/config';
+import express from 'express';
+import { asynchronouslyProcessEvent } from './event';
+import init from './init';
+import Logger from './logger';
 import {
   getCountries,
   getDomains,
@@ -12,39 +12,39 @@ import {
   getEventsById,
   getPageviews,
   getPaths,
-} from "./services/clickhouse";
-import prisma from "./services/prisma";
+} from './services/clickhouse';
+import prisma from './services/prisma';
 
 const PORT = process.env.PORT || 3000;
 
-const logger = new Logger("Node");
+const logger = new Logger('Node');
 
 const app = express();
 // Allow all origins
 app.use(
   cors({
-    origin: "*",
-    methods: ["GET", "POST"],
-    allowedHeaders: ["Content-Type"],
+    origin: '*',
+    methods: ['GET', 'POST'],
+    allowedHeaders: ['Content-Type'],
   })
 );
 app.use(bodyParser.json());
 
-app.set("trust proxy", true);
-app.set("json spaces", 2);
+app.set('trust proxy', true);
+app.set('json spaces', 2);
 
-app.post("/log", async (req, res) => {
+app.post('/log', async (req, res) => {
   const event = req.body;
   if (!event?.data) {
-    res.status(400).send("Missing event data");
+    res.status(400).send('Missing event data');
     return;
   }
-  const ipAddress = (req.ip || req.headers["x-forwarded-for"] || "") as string;
+  const ipAddress = (req.ip || req.headers['x-forwarded-for'] || '') as string;
   asynchronouslyProcessEvent({ event: event.data, ipAddress });
-  res.send("Logged");
+  res.send('Logged');
 });
 
-app.post("/sessions", async (req, res) => {
+app.post('/sessions', async (req, res) => {
   const { events, sessionId }: { events: any[]; sessionId: string } = req.body;
 
   try {
@@ -69,30 +69,30 @@ app.post("/sessions", async (req, res) => {
         },
       });
     });
-    res.send("Logged");
+    res.send('Logged');
   } catch (err) {
     console.error(err.message);
   }
 });
 
-app.get("/sessions", async (req, res) => {
+app.get('/sessions', async (req, res) => {
   const sessions = await prisma.session.findMany({
     include: {
       events: true,
     },
     orderBy: {
-      startTime: "desc",
+      startTime: 'desc',
     },
   });
   res.json(sessions);
 });
 
-app.get("/persons", async (req, res) => {
+app.get('/persons', async (req, res) => {
   const persons = await prisma.person.findMany();
   res.json(persons);
 });
 
-app.get("/persons/:id", async (req, res) => {
+app.get('/persons/:id', async (req, res) => {
   const person = await prisma.person.findUnique({
     where: {
       id: req.params.id,
@@ -101,42 +101,41 @@ app.get("/persons/:id", async (req, res) => {
   res.json(person);
 });
 
-app.get("/events", async (req, res) => {
+app.get('/events', async (req, res) => {
   const events = (await getEvents()) as ClientEvent;
   res.json(events.data);
 });
 
-app.get("/events/pageviews", async (req, res) => {
+app.get('/events/pageviews', async (req, res) => {
   const { startTime, endTime } = req.query;
   if (!startTime) {
     res.json({
-      message: "Missing startTime",
+      message: 'Missing startTime',
     });
   }
-  console.log(startTime, endTime);
-  const pageviews = await getPageviews(
+  const pageviews = (await getPageviews(
     startTime as string,
     endTime as string | undefined
-  );
-  res.json(pageviews);
+  )) as ClientEvent;
+  res.json(pageviews.data);
 });
 
-app.get("/events/domains", async (req, res) => {
+app.get('/events/domains', async (req, res) => {
   const domains = (await getDomains()) as ClientEvent;
   res.json(domains.data);
 });
 
-app.get("/events/paths", async (req, res) => {
+app.get('/events/paths', async (req, res) => {
   const paths = (await getPaths()) as ClientEvent;
   res.json(paths.data);
 });
 
-app.get("/events/countries", async (req, res) => {
+app.get('/events/countries', async (req, res) => {
   const countries = (await getCountries()) as ClientEvent;
   res.json(countries.data);
 });
 
-app.get("/events/:id", async (req, res) => {
+app.get('/events/:id', async (req, res) => {
   const events = (await getEventsById(req.params.id)) as ClientEvent;
   res.json(events.data);
 });

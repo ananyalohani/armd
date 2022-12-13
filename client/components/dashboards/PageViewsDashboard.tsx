@@ -8,26 +8,47 @@ import {
   VStack,
 } from '@chakra-ui/react';
 import format from 'date-fns/format';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Line } from 'react-chartjs-2';
 
-type TimePeriod = 'week' | 'fortnight' | 'month';
+enum TimePeriod {
+  WEEK = 7,
+  FORTNIGHT = 14,
+  MONTH = 30,
+}
 
 export default function PageViewsDashboard() {
-  const [timePeriod, setTimePeriod] = useState<TimePeriod>('week');
-  const dateRange = Array.from(
-    {
-      length: timePeriod === 'week' ? 7 : timePeriod === 'fortnight' ? 14 : 30,
-    },
-    (_, i) =>
-      format(new Date(new Date().setDate(new Date().getDate() - i)), 'MMM dd')
+  const [timePeriod, setTimePeriod] = useState<TimePeriod>(TimePeriod.WEEK);
+  const [pageViews, setPageViews] = useState<number[]>([]);
+  const dateRange = Array.from({ length: timePeriod }, (_, i) =>
+    new Date().setDate(new Date().getDate() - i)
   ).reverse();
-  const data = Array.from(
-    {
-      length: timePeriod === 'week' ? 7 : timePeriod === 'fortnight' ? 14 : 30,
-    },
-    () => Math.floor(Math.random() * 100)
-  );
+
+  const isOnDay = (timestamp: number, day: number) => {
+    const date = new Date(timestamp);
+    return (
+      date.getDate() === new Date(day).getDate() &&
+      date.getMonth() === new Date(day).getMonth() &&
+      date.getFullYear() === new Date(day).getFullYear()
+    );
+  };
+
+  useEffect(() => {
+    (async () => {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/events/pageviews?startTime=${dateRange[0]}`
+      );
+      const data = (await res.json()) as any[];
+      const pageViews: number[] = [];
+      dateRange.map((date) => {
+        const pageView = data.filter((event) =>
+          isOnDay(parseInt(event.datetime), date)
+        );
+        pageViews.push(pageView.length);
+      });
+      setPageViews(pageViews);
+    })();
+  }, [dateRange]);
 
   return (
     <Card backgroundColor='white'>
@@ -49,18 +70,26 @@ export default function PageViewsDashboard() {
           <Select
             size='sm'
             width='150px'
-            onChange={(e) => setTimePeriod(e.target.value as TimePeriod)}
+            onChange={(e) =>
+              setTimePeriod(parseInt(e.target.value) as TimePeriod)
+            }
           >
-            <option value='week' defaultChecked={timePeriod === 'week'}>
+            <option
+              value={TimePeriod.WEEK}
+              defaultChecked={timePeriod === TimePeriod.WEEK}
+            >
               Last 7 days
             </option>
             <option
-              value='fortnight'
-              defaultChecked={timePeriod === 'fortnight'}
+              value={TimePeriod.FORTNIGHT}
+              defaultChecked={timePeriod === TimePeriod.FORTNIGHT}
             >
               Last 14 days
             </option>
-            <option value='month' defaultChecked={timePeriod === 'month'}>
+            <option
+              value={TimePeriod.MONTH}
+              defaultChecked={timePeriod === TimePeriod.MONTH}
+            >
               Last 30 days
             </option>
           </Select>
@@ -76,12 +105,12 @@ export default function PageViewsDashboard() {
           data={{
             datasets: [
               {
-                data: data,
+                data: pageViews,
                 borderColor: '#F5656595',
                 pointBorderColor: '#F56565',
               },
             ],
-            labels: dateRange,
+            labels: dateRange.map((date) => format(date, 'MMM dd')),
           }}
         />
       </CardBody>
