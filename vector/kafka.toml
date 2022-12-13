@@ -21,21 +21,15 @@ source = '''
   del(.source_type)
 '''
 
-# [sinks.clickhouse]
-# type = "clickhouse"
-# inputs = ["remove_fields"]
-# endpoint = "${CLICKHOUSE_HOST}"
-# database = "${CLICKHOUSE_DATABASE}"
-# table = "${CLICKHOUSE_TABLE}"
-# skip_unknown_fields = true
-# auth.strategy = "basic"
-# auth.user = "${CLICKHOUSE_USER}"
-# auth.password = "${CLICKHOUSE_PASSWORD}"
-# buffer.max_events = 10000
-# batch.timeout_secs = 1
-
-[sinks.file]
-type = "file"
+[sinks.clickhouse]
+type = "clickhouse"
 inputs = ["remove_fields"]
-path = "/Users/plibither8/iiitd/padhai/semester-7/cse569_cldc/project/vector/events.txt"
-encoding.codec = "json"
+endpoint = "${CLICKHOUSE_HOST}"
+database = "${CLICKHOUSE_DATABASE}"
+table = "${CLICKHOUSE_TABLE}"
+skip_unknown_fields = true
+auth.strategy = "basic"
+auth.user = "${CLICKHOUSE_USER}"
+auth.password = "${CLICKHOUSE_PASSWORD}"
+buffer.max_events = 10000
+batch.timeout_secs = 1
