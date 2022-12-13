@@ -58,6 +58,16 @@ interface ArmdEvent {
   id: string;
   type: string;
   sessionId: string;
-  timestamp: number;
   properties: Partial<ArmdEventProperties>;
+}
+
+interface ClientEvent {
+  meta: any[];
+  data: ClickHouseEvent[];
+  rows: number;
+  statistics: {
+    elapsed: number;
+    rows_read: number;
+    bytes_read: number;
+  };
 }

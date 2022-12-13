@@ -7,7 +7,7 @@ import { v4 as uuidv4 } from 'uuid';
 const createEventPayload = (event: Event) => {
   const target = event.target as HTMLElement;
   return {
-    event: event.type,
+    type: event.type,
     sessionId: sessionStorage.getItem('ARMD_SESSION_ID'),
     properties: {
       referrer: document.referrer,

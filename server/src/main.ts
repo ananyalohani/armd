@@ -81,6 +81,7 @@ app.post('/sessions', async (req, res) => {
         });
       });
     }
+    res.send('Logged');
   } catch (err) {
     console.error(err.message);
   }
@@ -114,8 +115,56 @@ app.get('/persons/:id', async (req, res) => {
 });
 
 app.get('/events', async (req, res) => {
-  const events = await getEvents();
-  res.json(events);
+  const events = (await getEvents()) as ClientEvent;
+  const { filter } = req.query;
+  if (!filter) {
+    res.json(events);
+  } else if (filter === 'pageviews') {
+    res.json(events.data.filter((e) => e.type === 'pageshow'));
+  } else if (filter === 'domains') {
+    const domainsList = events.data
+      .filter((e) => e.type === 'pageshow')
+      .map((e) => e.prop_referrer);
+    const domains = {};
+    domainsList.forEach((domain) => {
+      if (domains[domain]) {
+        domains[domain] += 1;
+      } else {
+        domains[domain] = 1;
+      }
+    });
+    res.json(domains);
+  } else if (filter === 'paths') {
+    const pathsList = events.data
+      .filter((e) => e.type === 'pageshow')
+      .map((e) => e.prop_pathname);
+    const paths = {};
+    pathsList.forEach((path) => {
+      if (paths[path]) {
+        paths[path] += 1;
+      } else {
+        paths[path] = 1;
+      }
+    });
+    res.json(paths);
+  } else if (filter === 'countries') {
+    const countriesList = events.data
+      .filter((e) => e.type === 'pageshow')
+      .map((e) => e.prop_country);
+    const countries = {};
+    countriesList.forEach((country) => {
+      if (countries[country]) {
+        countries[country] += 1;
+      } else {
+        countries[country] = 1;
+      }
+    });
+    res.json(countries);
+  } else {
+    res.json({
+      message: 'Invalid filter',
+    });
+  }
 });
 
 async function main() {
