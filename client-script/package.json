@@ -1,18 +1,11 @@
 {
-  "name": "armd-client-script",
+  "name": "armd.js",
   "files": [
     "dist"
   ],
-  "main": "./dist/armd.umd.cjs",
+  "main": "./dist/armdjs",
   "module": "./dist/armd.js",
-  "exports": {
-    ".": {
-      "import": "./dist/armd.js",
-      "require": "./dist/armd.umd.cjs"
-    }
-  },
-  "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
