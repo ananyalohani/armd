@@ -1,0 +1,23 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: vector-client-ingress
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /playground
+        pathType: Exact
+        backend:
+          service:
+            name: armd-test-vector
+            port:
+              number: 8686
+      - path: /graphql
+        pathType: Exact
+        backend:
+          service:
+            name: armd-test-vector
+            port:
+              number: 8686
+
