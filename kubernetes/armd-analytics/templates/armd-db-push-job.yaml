@@ -1,0 +1,22 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: armd-db-push-job
+spec:
+  template:
+    spec:
+      containers:
+      - name: armd-db-push-job
+        image: thesantatitan/armd-gendb
+        env: 
+        - name: DB_URL
+          value: armd-postgres
+        - name: DB_PSWD
+          valueFrom:
+            secretKeyRef:
+              name: postgres-pswd
+              key: superUserPassword
+        - name: MASTER_DB_URL
+          value: "postgresql://postgres:$(DB_PSWD)@$(DB_URL)"
+      restartPolicy: Never
+  backoffLimit: 4
