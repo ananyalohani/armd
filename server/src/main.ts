@@ -5,7 +5,13 @@ import express from 'express';
 import { asynchronouslyProcessEvent } from './event';
 import init from './init';
 import Logger from './logger';
-import { getEvents } from './services/clickhouse';
+import {
+  getCountries,
+  getDomains,
+  getEvents,
+  getPageviews,
+  getPaths,
+} from './services/clickhouse';
 import prisma from './services/prisma';
 
 const PORT = process.env.PORT || 3000;
@@ -116,55 +122,37 @@ app.get('/persons/:id', async (req, res) => {
 
 app.get('/events', async (req, res) => {
   const events = (await getEvents()) as ClientEvent;
-  const { filter } = req.query;
-  if (!filter) {
-    res.json(events);
-  } else if (filter === 'pageviews') {
-    res.json(events.data.filter((e) => e.type === 'pageshow'));
-  } else if (filter === 'domains') {
-    const domainsList = events.data
-      .filter((e) => e.type === 'pageshow')
-      .map((e) => e.prop_referrer);
-    const domains = {};
-    domainsList.forEach((domain) => {
-      if (domains[domain]) {
-        domains[domain] += 1;
-      } else {
-        domains[domain] = 1;
-      }
-    });
-    res.json(domains);
-  } else if (filter === 'paths') {
-    const pathsList = events.data
-      .filter((e) => e.type === 'pageshow')
-      .map((e) => e.prop_pathname);
-    const paths = {};
-    pathsList.forEach((path) => {
-      if (paths[path]) {
-        paths[path] += 1;
-      } else {
-        paths[path] = 1;
-      }
-    });
-    res.json(paths);
-  } else if (filter === 'countries') {
-    const countriesList = events.data
-      .filter((e) => e.type === 'pageshow')
-      .map((e) => e.prop_country);
-    const countries = {};
-    countriesList.forEach((country) => {
-      if (countries[country]) {
-        countries[country] += 1;
-      } else {
-        countries[country] = 1;
-      }
-    });
-    res.json(countries);
-  } else {
+  res.json(events.data);
+});
+
+app.get('/events/pageviews', async (req, res) => {
+  const { startTime, endTime } = req.query;
+  if (!startTime) {
     res.json({
-      message: 'Invalid filter',
+      message: 'Missing startTime',
     });
   }
+  console.log(startTime, endTime);
+  const pageviews = await getPageviews(
+    startTime as string,
+    endTime as string | undefined
+  );
+  res.json(pageviews);
+});
+
+app.get('/events/domains', async (req, res) => {
+  const domains = (await getDomains()) as ClientEvent;
+  res.json(domains.data);
+});
+
+app.get('/events/paths', async (req, res) => {
+  const paths = (await getPaths()) as ClientEvent;
+  res.json(paths.data);
+});
+
+app.get('/events/countries', async (req, res) => {
+  const countries = (await getCountries()) as ClientEvent;
+  res.json(countries.data);
 });
 
 async function main() {
@@ -175,3 +163,5 @@ async function main() {
 }
 
 main();
+
+console.log(new Date('2022-12-13 08:38:50.000').getTime());
