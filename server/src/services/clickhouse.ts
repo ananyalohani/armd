@@ -82,6 +82,18 @@ export const getEvents = async () => {
   }
 };
 
+export const getEventsById = async (id: string) => {
+  try {
+    const result = await client.query({
+      query: `SELECT * FROM events WHERE id = '${id}'`,
+    });
+    const events = await result.json();
+    return events;
+  } catch (error) {
+    logger.error(`Failed to get events: ${error}`);
+  }
+};
+
 export const getPageviews = async (
   startTime: string,
   endTime: string | undefined

@@ -9,6 +9,7 @@ import {
   getCountries,
   getDomains,
   getEvents,
+  getEventsById,
   getPageviews,
   getPaths,
 } from './services/clickhouse';
@@ -122,6 +123,11 @@ app.get('/persons/:id', async (req, res) => {
 
 app.get('/events', async (req, res) => {
   const events = (await getEvents()) as ClientEvent;
+  res.json(events.data);
+});
+
+app.get('/events/:id', async (req, res) => {
+  const events = (await getEventsById(req.params.id)) as ClientEvent;
   res.json(events.data);
 });
 

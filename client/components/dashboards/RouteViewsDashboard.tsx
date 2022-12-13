@@ -14,7 +14,6 @@ export default function RouteViewsDashboard({}: Props) {
       );
       const data = await res.json();
       setRoutes(data);
-      console.log(data);
     };
 
     fetchRoutes();
