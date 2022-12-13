@@ -28,6 +28,7 @@ interface ClickHouseEvent extends Record<string, any> {
   id: string;
   type: string;
   datetime: string;
+  sessionId: string;
   prop_ip: string;
   prop_country: string;
   prop_continent: string;
@@ -56,6 +57,7 @@ interface ClickHouseEvent extends Record<string, any> {
 interface ArmdEvent {
   id: string;
   type: string;
+  sessionId: string;
   timestamp: number;
   properties: Partial<ArmdEventProperties>;
 }
