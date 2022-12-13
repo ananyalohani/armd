@@ -1,14 +1,14 @@
-import { getGeoData } from './services/maxmind';
-import { sendEvent } from './services/kafka';
-import prisma from './services/prisma';
-import cuid from 'cuid';
+import { getGeoData } from "./services/maxmind";
+import { sendEvent } from "./services/kafka";
+import prisma from "./services/prisma";
+import cuid from "cuid";
 
 const snakeCase = (str: string) =>
   str.replace(/[A-Z]/g, (letter) => `_${letter.toLowerCase()}`);
 
 const transformEvent = (event: ArmdEvent): Partial<ClickHouseEvent> => {
   const { id, type, sessionId, properties } = event;
-  const datetime = new Date().toISOString().replace('T', ' ').replace('Z', '');
+  const datetime = new Date().toISOString().replace("T", " ").replace("Z", "");
   const clickhouseEvent: Partial<ClickHouseEvent> = {
     id,
     type,
@@ -41,7 +41,7 @@ export const asynchronouslyProcessEvent = async ({
     referrer:
       event.properties.referrer.length > 0
         ? event.properties.referrer
-        : 'direct',
+        : "direct",
   };
 
   // Transform to clickhouse event
