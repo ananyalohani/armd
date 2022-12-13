@@ -1,7 +1,7 @@
-import { ClickHouseClient, createClient } from "@clickhouse/client";
-import Logger from "../logger";
+import { ClickHouseClient, createClient } from '@clickhouse/client';
+import Logger from '../logger';
 
-const logger = new Logger("ClickHouse");
+const logger = new Logger('ClickHouse');
 
 let client: ClickHouseClient;
 
@@ -41,7 +41,7 @@ const CREATE_EVENTS_TABLE = `
 
 export const init = async () => {
   try {
-    logger.info("Connecting to ClickHouse...");
+    logger.info('Connecting to ClickHouse...');
     client = createClient({
       host: process.env.CLICKHOUSE_HOST,
       username: process.env.CLICKHOUSE_USERNAME,
@@ -50,14 +50,14 @@ export const init = async () => {
     });
     const isAlive = await client.ping();
     if (isAlive) {
-      logger.info("ClickHouse is alive");
-      logger.info("Connected to ClickHouse");
+      logger.info('ClickHouse is alive');
+      logger.info('Connected to ClickHouse');
     } else {
-      logger.error("ClickHouse is not alive");
-      logger.error("Failed to connect to ClickHouse");
+      logger.error('ClickHouse is not alive');
+      logger.error('Failed to connect to ClickHouse');
       return;
     }
-    logger.info("Creating events table...");
+    logger.info('Creating events table...');
     // await client.exec({
     //   query: "DROP TABLE IF EXISTS events",
     // });
@@ -67,7 +67,7 @@ export const init = async () => {
         wait_end_of_query: 1,
       },
     });
-    logger.info("Created events table");
+    logger.info('Created events table');
   } catch (error) {
     logger.error(`Failed to connect to ClickHouse: ${error}`);
   }
@@ -76,7 +76,7 @@ export const init = async () => {
 export const getEvents = async () => {
   try {
     const result = await client.query({
-      query: "SELECT * FROM events ORDER BY datetime DESC",
+      query: 'SELECT * FROM events ORDER BY datetime DESC',
     });
     const events = await result.json();
     return events;
@@ -102,16 +102,8 @@ export const getPageviews = async (
   endTime: string | undefined
 ) => {
   try {
-    const s = new Date(parseInt(startTime))
-      .toISOString()
-      .replace("T", " ")
-      .replace("Z", "");
-    const e = endTime
-      ? new Date(parseInt(endTime))
-          .toISOString()
-          .replace("T", " ")
-          .replace("Z", "")
-      : new Date().toISOString().replace("T", " ").replace("Z", "");
+    const s = parseInt(startTime);
+    const e = endTime ? parseInt(endTime) : new Date().getTime();
     console.log(
       `SELECT * from events WHERE type = 'pageview' AND datetime >= '${s}' AND datetime <= '${e}' ORDER BY datetime DESC`
     );
