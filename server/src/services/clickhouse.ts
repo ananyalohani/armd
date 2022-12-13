@@ -1,7 +1,7 @@
-import { ClickHouseClient, createClient } from "@clickhouse/client";
-import Logger from "../logger";
+import { ClickHouseClient, createClient } from '@clickhouse/client';
+import Logger from '../logger';
 
-const logger = new Logger("ClickHouse");
+const logger = new Logger('ClickHouse');
 
 let client: ClickHouseClient;
 
@@ -10,6 +10,7 @@ const CREATE_EVENTS_TABLE = `
     id String,
     type String,
     datetime DateTime,
+    sessionId String,
     prop_ip String,
     prop_country String,
     prop_continent String,
@@ -40,7 +41,7 @@ const CREATE_EVENTS_TABLE = `
 
 export const init = async () => {
   try {
-    logger.info("Connecting to ClickHouse...");
+    logger.info('Connecting to ClickHouse...');
     client = createClient({
       host: process.env.CLICKHOUSE_HOST,
       username: process.env.CLICKHOUSE_USERNAME,
@@ -49,21 +50,21 @@ export const init = async () => {
     });
     const isAlive = await client.ping();
     if (isAlive) {
-      logger.info("ClickHouse is alive");
-      logger.info("Connected to ClickHouse");
+      logger.info('ClickHouse is alive');
+      logger.info('Connected to ClickHouse');
     } else {
-      logger.error("ClickHouse is not alive");
-      logger.error("Failed to connect to ClickHouse");
+      logger.error('ClickHouse is not alive');
+      logger.error('Failed to connect to ClickHouse');
       return;
     }
-    logger.info("Creating events table...");
+    logger.info('Creating events table...');
     await client.exec({
       query: CREATE_EVENTS_TABLE,
       clickhouse_settings: {
         wait_end_of_query: 1,
       },
     });
-    logger.info("Created events table");
+    logger.info('Created events table');
   } catch (error) {
     logger.error(`Failed to connect to ClickHouse: ${error}`);
   }
@@ -72,7 +73,7 @@ export const init = async () => {
 export const getEvents = async () => {
   try {
     const result = await client.query({
-      query: "SELECT * FROM events",
+      query: 'SELECT * FROM events',
     });
     const events = await result.json();
     return events;

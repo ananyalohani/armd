@@ -7,11 +7,12 @@ const snakeCase = (str: string) =>
   str.replace(/[A-Z]/g, (letter) => `_${letter.toLowerCase()}`);
 
 const transformEvent = (event: ArmdEvent): Partial<ClickHouseEvent> => {
-  const { id, type, properties } = event;
+  const { id, type, sessionId, properties } = event;
   const datetime = new Date().toISOString().replace('T', ' ').split('.')[0];
   const clickhouseEvent: Partial<ClickHouseEvent> = {
     id,
     type,
+    sessionId,
     datetime,
   };
   for (const [key, value] of Object.entries(properties)) {
