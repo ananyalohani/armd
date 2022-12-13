@@ -14,6 +14,7 @@ import Layout from '../../components/Layout';
 import format from 'date-fns/format';
 import { useEffect, useState } from 'react';
 import { useInterval } from '../../hooks/useInterval';
+import PersonAvatar from '../../components/Avatar';
 
 export interface Event {
   event: string;
@@ -70,8 +71,8 @@ export default function LiveEvents() {
                       </Link>
                     </Td>
                     <Td display={'flex'} alignItems='center'>
-                      <Avatar name={e.prop_ip_address} size='xs' mr='1' />{' '}
-                      <span>{e.prop_ip_address}</span>
+                      <PersonAvatar name={e.prop_ip_address} />
+                      <span style={{ marginLeft: 5 }}>{e.prop_ip_address}</span>
                     </Td>
                     <Td>{e.prop_pathname}</Td>
                     <Td>{source}</Td>
