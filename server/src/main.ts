@@ -75,16 +75,25 @@ app.post("/sessions", async (req, res) => {
   }
 });
 
-app.get("/sessions", async (req, res) => {
-  const sessions = await readerDb.session.findMany({
-    include: {
-      events: true,
-    },
+app.get('/sessions', async (req, res) => {
+  const sessions = await prisma.session.findMany({
     orderBy: {
       startTime: "desc",
     },
   });
   res.json(sessions);
+});
+
+app.get('/sessions/:id', async (req, res) => {
+  const session = await prisma.session.findUnique({
+    where: {
+      id: req.params.id,
+    },
+    include: {
+      events: true,
+    },
+  });
+  res.json(session);
 });
 
 app.get("/persons", async (req, res) => {

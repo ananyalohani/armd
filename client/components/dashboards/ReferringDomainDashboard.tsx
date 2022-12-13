@@ -12,6 +12,7 @@ export default function ReferringDomainDashboard({}: Props) {
       `${process.env.NEXT_PUBLIC_API_BASE_URL}/events/domains`
     );
     const data = await res.json();
+
     setDomains(data);
   };
 

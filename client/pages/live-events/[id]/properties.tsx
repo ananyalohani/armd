@@ -56,8 +56,8 @@ export default function Properties({ event }: any) {
               <Tr>
                 <Td textTransform='capitalize'>{event.type}</Td>
                 <Td display={'flex'} alignItems='center'>
-                  <Avatar name='192.168.2.237' size='xs' mr='1' />{' '}
-                  <span>192.168.2.237</span>
+                  <Avatar name={event.prop_ip_address} size='xs' mr='1' />{' '}
+                  <span>{event.prop_ip_address}</span>
                 </Td>
                 <Td>{url}</Td>
                 <Td>{source}</Td>

@@ -15,7 +15,6 @@ import {
   ArcElement,
   Colors,
 } from 'chart.js';
-import Script from 'next/script';
 
 const logoFont = Passion_One({
   weight: '400',

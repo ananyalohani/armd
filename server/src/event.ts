@@ -18,6 +18,7 @@ const transformEvent = (event: ArmdEvent): Partial<ClickHouseEvent> => {
   for (const [key, value] of Object.entries(properties)) {
     clickhouseEvent[`prop_${snakeCase(key)}`] = value;
   }
+  clickhouseEvent['prop_referrer'] = new URL(properties.referrer).hostname;
   return clickhouseEvent;
 };
 
@@ -41,7 +42,7 @@ export const asynchronouslyProcessEvent = async ({
     referrer:
       event.properties.referrer.length > 0
         ? event.properties.referrer
-        : "direct",
+        : 'direct',
   };
 
   // Transform to clickhouse event

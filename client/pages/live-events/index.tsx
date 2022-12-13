@@ -72,8 +72,8 @@ export default function LiveEvents() {
                       </Link>
                     </Td>
                     <Td display={'flex'} alignItems='center'>
-                      <Avatar name='192.168.2.237' size='xs' mr='1' />{' '}
-                      <span>192.168.2.237</span>
+                      <Avatar name={e.prop_ip_address} size='xs' mr='1' />{' '}
+                      <span>{e.prop_ip_address}</span>
                     </Td>
                     <Td>{url}</Td>
                     <Td>{source}</Td>
