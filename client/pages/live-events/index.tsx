@@ -10,12 +10,12 @@ import {
   Th,
   Thead,
   Tr,
-} from "@chakra-ui/react";
-import Layout from "../../components/Layout";
-import format from "date-fns/format";
-import { useEffect, useState } from "react";
-import { useInterval } from "../../hooks/useInterval";
-import PersonAvatar from "../../components/Avatar";
+} from '@chakra-ui/react';
+import Layout from '../../components/Layout';
+import format from 'date-fns/format';
+import { useEffect, useState } from 'react';
+import { useInterval } from '../../hooks/useInterval';
+import PersonAvatar from '../../components/Avatar';
 
 export interface Event {
   event: string;
@@ -44,14 +44,14 @@ export default function LiveEvents() {
   useInterval(fetchEvents, REFRESH_INTERVAL);
 
   return (
-    <Layout heading="Live Events">
-      <Text mb="10">
+    <Layout heading='Live Events'>
+      <Text mb='10'>
         This page displays a stream of live events being created as users
         navigate and interact with your website. The list refreshes every 1
         minute.
       </Text>
-      <TableContainer background={"white"} borderRadius="8" maxW="full">
-        <Table size="sm" maxW="full" w="full">
+      <TableContainer background={'white'} borderRadius='8' maxW='full'>
+        <Table size='sm' maxW='full' w='full'>
           <Thead>
             <Tr>
               <Th>Event</Th>
@@ -65,24 +65,24 @@ export default function LiveEvents() {
             <>
               {events.map((e) => {
                 const userAgentData = JSON.parse(e.prop_user_agent_data);
-                const source = userAgentData.mobile ? "mobile" : "web";
+                const source = userAgentData?.mobile ? 'mobile' : 'web';
                 return (
                   <Tr key={e.id}>
-                    <Td textTransform="capitalize">
+                    <Td textTransform='capitalize'>
                       <Link
                         href={`/live-events/${e.id}/properties`}
-                        color="purple.700"
+                        color='purple.700'
                       >
                         {e.type}
                       </Link>
                     </Td>
-                    <Td display={"flex"} alignItems="center">
+                    <Td display={'flex'} alignItems='center'>
                       <PersonAvatar name={e.prop_ip_address} />
                       <span style={{ marginLeft: 5 }}>{e.prop_ip_address}</span>
                     </Td>
                     <Td>{e.prop_pathname}</Td>
                     <Td>{source}</Td>
-                    <Td>{format(new Date(parseInt(e.datetime)), "PPpp")}</Td>
+                    <Td>{format(new Date(parseInt(e.datetime)), 'PPpp')}</Td>
                   </Tr>
                 );
               })}
