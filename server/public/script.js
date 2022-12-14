@@ -5,7 +5,6 @@ function addMultipleEventListeners(element, events, handler) {
 }
 
 const handleEvent = (e) => {
-  console.log(e.type, e.destination);
   const eventInfo = {
     event: e.type,
     selector:
